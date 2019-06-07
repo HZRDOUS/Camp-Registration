@@ -63,8 +63,8 @@ canvas.configure(yscrollcommand = scrollbar.set)
 widgets = [mainframe, infoLabel, menu, filemenu, campLabel, nameLabel, nameEntry, dateOfBirthLabel]
 
 #Grid
-root.minsize(width=900, height=600)
-root.maxsize(width=1000, height=700)
+root.minsize(width=900, height=800)
+root.maxsize(width=1000, height=900)
 mainframe.grid(padx = 10, pady = 10)
 campLabel.grid(row=1, column=1, padx = 0, pady = 0)
 campLabel2.grid(row=2, column=1, padx = 10)
