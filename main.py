@@ -40,6 +40,8 @@ dateOfBirthLabel = Label(mainframe, text="Date of Birth:", font = ("Courier New"
 monthLabel = Label(mainframe, text="Month:", font = ("Courier New", 10))
 dayLabel = Label(mainframe, text="Day:", font = ("Courier New", 10))
 yearLabel = Label(mainframe, text="Year:", font = ("Courier New", 10))
+genderLabel = Label(mainframe, text="Gender:", font = ("Courier New", 10))
+programLabel = Label(mainframe, text="Program", font = ("Courier New", 10))
 
 months = list(range(1, 12))
 days = list(range(1, 31))
@@ -57,13 +59,25 @@ dayEntry = Spinbox(mainframe, textvariable = dayVar, values = days)
 yearVar = IntVar()
 yearEntry = Spinbox(mainframe, textvariable = yearVar, values = years)
 
+genderFrame = LabelFrame(mainframe, text="Gender:")
+genderVar = StringVar()
+genderVar.set("Male")
+maleRadio = Radiobutton(genderFrame, text="Male", variable = genderVar, value="Male")
+femaleRadio = Radiobutton(genderFrame, text="Female", variable = genderVar, value="Female")
+
+programVar = StringVar()
+programVar.set("-----")
+programs = ["------", "Session 1", "Session 2", "Session 3", "Fishing with Garrison Stokes", 
+"Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", "Rap Talk with NAV",
+"Just Video Games", "Anime", "Advanced Functions MHF4U", ""]
+
 scrollbar = Scrollbar(mainframe, command=canvas.yview)
 canvas.configure(yscrollcommand = scrollbar.set)
 
 widgets = [mainframe, infoLabel, menu, filemenu, campLabel, nameLabel, nameEntry, dateOfBirthLabel]
 
 #Grid
-root.minsize(width=900, height=800)
+root.minsize(width=900, height=700)
 root.maxsize(width=1000, height=900)
 mainframe.grid(padx = 10, pady = 10)
 campLabel.grid(row=1, column=1, padx = 0, pady = 0)
@@ -78,5 +92,9 @@ monthLabel.grid(row=8, column=1)
 monthEntry.grid(row=9, column=1)
 yearLabel.grid(row=10, column=1)
 yearEntry.grid(row=11, column = 1)
+genderLabel.grid(row=12, column=1, sticky="W")
+genderFrame.grid(row=13, column=1)
+maleRadio.grid(sticky="W")
+femaleRadio.grid(sticky="W")
 
 root.mainloop()
