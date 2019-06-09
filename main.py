@@ -181,8 +181,11 @@ scrollbar = Scrollbar(regframe)
 listbox = Listbox(regframe, width = 75)
 listbox.grid(row=2, column=1)
 
+kids = []
+
 for i in range(100):
-    listbox.insert(END, i)
+    for i in kids[i]:
+        listbox.insert(END)
 
 # bind listbox to scrollbar
 listbox.config(yscrollcommand=scrollbar.set)
