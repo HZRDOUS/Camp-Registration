@@ -45,9 +45,9 @@ filemenu.add_command(label="Clear", command = clear)
 #filemenu.add_command(label="Dark Mode", command = darkMode)
 #filemenu.add_command(label="Light Mode", command = lightMode)
 
+infoLabel = Label(regframe, text="Kid Info", font = ("Courier New", 20))
 campLabel = Label(infoFrame, text="Camp Kidney", font = ("Courier New", 20))
 campLabel2 = Label(infoFrame, text="Registration Program", font = ("Courier New", 18))
-infoLabel = Label(regframe, text="Kid Info", font = ("Courier New", 20))
 nameLabel = Label(infoFrame, text="Full name:", font = ("Courier New", 10))
 dateOfBirthLabel = Label(infoFrame, text="Date of Birth:", font = ("Courier New", 10))
 genderLabel = Label(infoFrame, text="Gender:", font = ("Courier New", 10))
@@ -176,6 +176,17 @@ msCheck2 = Radiobutton(parent2Frame, text="Ms.", variable=parentVar2, value="Ms.
 missCheck2 = Radiobutton(parent2Frame, text="Miss.", variable=parentVar2, value="Miss.")
 drCheck2 = Radiobutton(parent2Frame, text="Dr.", variable=parentVar2, value="Dr.")
 
+#Regframe declarations
+scrollbar = Scrollbar(regframe)
+listbox = Listbox(regframe, width = 75)
+listbox.grid(row=2, column=1)
+
+for i in range(100):
+    listbox.insert(END, i)
+
+# bind listbox to scrollbar
+listbox.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=listbox.yview)
 
 vars = [firstNameVar, lastNameVar, monthVar, dayVar, yearVar, genderVar, programVar, addressVar,
         cityVar, provinceVar, countryVar, postalVar, phoneVar]
@@ -197,7 +208,7 @@ campLabel.grid(row=1, column=1, padx = 0, pady = 0)
 campLabel2.grid(row=2, column=1, padx = 10)
 
 #infoFrame gridding
-infoLabel.grid(row=1, column=1)
+infoLabel.grid(row=1, column=1, sticky = "W")
 #Kidinfo Gridding
 nameFrame.grid(row=1, column=1, rowspan = 4, padx = 10, pady = 10)
 firstNameChildLabel.grid(row=1, column=1)
