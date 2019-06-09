@@ -13,7 +13,6 @@ def clear():
         else:
             var.set("")
 
-
 #def darkMode():
 #    root.configure(background="black")
 #    for wid in widgets:
@@ -124,11 +123,44 @@ phoneLabel = Label(primaryInfoFrame, text="Phone Number:", font = ("Courier New"
 phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 
 #Parent Info
+
+def enableOther():
+    value = enable.get()
+    if value == True:
+        otherEntry.config(state=NORMAL)
+        childLivesWithVar.set(otherVar)
+    else:
+        otherEntry.config(state=DISABLED)
+
+def checkOther():
+    enabled = enable.get()
+    if enabled == True:
+        enable.set(False)
+        otherEntry.configure(state = DISABLED)
+    elif enabled == None:
+        pass
+
 parentInfoFrame = LabelFrame(homeInfo, text="Parent Info", font = ("Courier New", 10))
+childLivesWithFrame = LabelFrame(parentInfoFrame, text="Child Lives With:", font = ("Courier New", 10), width = 300)
+childLivesWithVar = StringVar()
+childLivesWithVar.set("Both Parents")
+bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = checkOther)
+fatherCheck = Radiobutton(childLivesWithFrame, text="Father", variable = childLivesWithVar, value="Father", command = checkOther)
+motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLivesWithVar, value="Mother", command = checkOther)
+grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = checkOther)
+guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = checkOther)
+otherVar = StringVar()
+otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
+enable = BooleanVar()
+otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=enable, value=True, command = enableOther)
+
+
+
 parent1Frame = LabelFrame(parentInfoFrame, text="Parent 1:", font = ("Courier New", 10))
 parent2Frame = LabelFrame(parentInfoFrame, text="Parent 2:", font = ("Courier New", 10))
 genderOption1 = LabelFrame(parent1Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
 parentVar1 = StringVar()
+parentVar1.set("Mr.")
 mrCheck1 = Radiobutton(parent1Frame, text="Mr.", variable=parentVar1, value="Mr.")
 mrsCheck1 = Radiobutton(parent1Frame, text="Mrs.", variable=parentVar1, value="Mrs.")
 msCheck1 = Radiobutton(parent1Frame, text="Ms.", variable=parentVar1, value="Ms.")
@@ -137,6 +169,7 @@ drCheck1 = Radiobutton(parent1Frame, text="Dr.", variable=parentVar1, value="Dr.
 
 genderOption2 = LabelFrame(parent2Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
 parentVar2 = StringVar()
+parentVar2.set("Mr.")
 mrCheck2 = Radiobutton(parent2Frame, text="Mr.", variable=parentVar2, value="Mr.")
 mrsCheck2 = Radiobutton(parent2Frame, text="Mrs.", variable=parentVar2, value="Mrs.")
 msCheck2 = Radiobutton(parent2Frame, text="Ms.", variable=parentVar2, value="Ms.")
@@ -188,7 +221,7 @@ programMenu.grid(row=1, column=1)
 
 #homeInfo gridding
 #Home Info
-primaryInfoFrame.grid(row=1, column=1)
+primaryInfoFrame.grid(row=1, column=1, sticky = "W")
 addressLabel.grid(row=1, column=1)
 addressEntry.grid(row=1, column=2, columnspan = 3)
 cityLabel.grid(row = 2, column=1)
@@ -203,18 +236,29 @@ phoneLabel.grid(row = 4, column = 1)
 phoneEntry.grid(row = 4, column = 2, columnspan = 3)
 #Parent Info
 parentInfoFrame.grid(row = 2, column = 1)
-parent1Frame.grid(row = 1, column = 1)
-parent2Frame.grid(row = 1, column = 2)
-genderOption1.grid(row = 1, column = 1)
-mrCheck1.grid(row = 1, column = 1)
-mrsCheck1.grid(row = 1, column = 2)
-msCheck1.grid(row = 1, column = 3)
-missCheck1.grid(row=1, column = 4)
-drCheck1.grid(row=1, column = 5)
-genderOption2.grid(row = 1, column = 1)
-mrCheck2.grid(row = 1, column = 1)
-mrsCheck2.grid(row = 1, column = 2)
-msCheck2.grid(row = 1, column = 3)
-missCheck2.grid(row=1, column = 4)
-drCheck2.grid(row=1, column = 5)
+
+childLivesWithFrame.grid(row = 1, column = 1, columnspan = 8)
+bothCheck.grid(row = 1, column = 1)
+fatherCheck.grid(row = 1, column = 2)
+motherCheck.grid(row = 1, column = 3)
+grandparentCheck.grid(row = 1, column = 4)
+guardianCheck.grid(row = 1, column = 5)
+otherCheck.grid(row = 1, column = 6)
+otherEntry.grid(row = 1, column = 7)
+
+
+parent1Frame.grid(row = 2, column = 1)
+parent2Frame.grid(row = 2, column = 2)
+genderOption1.grid(row = 2, column = 1)
+mrCheck1.grid(row = 2, column = 1)
+mrsCheck1.grid(row = 2, column = 2)
+msCheck1.grid(row = 2, column = 3)
+missCheck1.grid(row = 2, column = 4)
+drCheck1.grid(row = 2, column = 5)
+genderOption2.grid(row = 2, column = 1)
+mrCheck2.grid(row = 2, column = 1)
+mrsCheck2.grid(row = 2, column = 2)
+msCheck2.grid(row = 2, column = 3)
+missCheck2.grid(row = 2, column = 4)
+drCheck2.grid(row = 2, column = 5)
 root.mainloop()
