@@ -97,7 +97,7 @@ programVar.set("--- Select Program ---")
 programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fishing with Garrison Stokes", 
             "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
             "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
-            ""]
+            "Beyond Scared Straight (Camp Edition)"]
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
 
@@ -124,7 +124,7 @@ phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 
 #Parent Info
 
-def enableOther():
+def enableOther(): #Enable "Other" radio button and "Other" entry space
     value = enable.get()
     if value == True:
         otherEntry.config(state=NORMAL)
@@ -132,7 +132,7 @@ def enableOther():
     else:
         otherEntry.config(state=DISABLED)
 
-def checkOther():
+def checkOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
     enabled = enable.get()
     if enabled == True:
         enable.set(False)
@@ -211,7 +211,7 @@ monthLabel.grid(row=1, column=2)
 monthEntry.grid(row=2, column=2)
 yearLabel.grid(row=1, column=3)
 yearEntry.grid(row=2, column = 3)
-genderFrame.grid(row=1, column=3)
+genderFrame.grid(row=1, column=3, padx = 10, pady = 10)
 #Gender gridding
 maleRadio.grid(row = 1, column = 1, sticky="W")
 femaleRadio.grid(row = 1, column = 2, sticky="W")
@@ -237,6 +237,7 @@ phoneEntry.grid(row = 4, column = 2, columnspan = 3)
 #Parent Info
 parentInfoFrame.grid(row = 2, column = 1)
 
+#Child Lives With?
 childLivesWithFrame.grid(row = 1, column = 1, columnspan = 8)
 bothCheck.grid(row = 1, column = 1)
 fatherCheck.grid(row = 1, column = 2)
@@ -246,7 +247,7 @@ guardianCheck.grid(row = 1, column = 5)
 otherCheck.grid(row = 1, column = 6)
 otherEntry.grid(row = 1, column = 7)
 
-
+#Parents 1 and 2
 parent1Frame.grid(row = 2, column = 1)
 parent2Frame.grid(row = 2, column = 2)
 genderOption1.grid(row = 2, column = 1)
@@ -261,4 +262,5 @@ mrsCheck2.grid(row = 2, column = 2)
 msCheck2.grid(row = 2, column = 3)
 missCheck2.grid(row = 2, column = 4)
 drCheck2.grid(row = 2, column = 5)
+
 root.mainloop()
