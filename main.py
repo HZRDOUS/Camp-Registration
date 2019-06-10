@@ -59,7 +59,7 @@ daysFeb = list(range(1, 28))
 years = list(range(2000, 2019))
 #Main Labelframe Declaration
 kidInfo = LabelFrame(infoFrame, text = "Child Info", font = ("Courier New", 10))
-homeInfo = LabelFrame(infoFrame, text = "Home Info", font = ("Courier New", 10))
+homeInfo = LabelFrame(infoFrame, text = "Household Info", font = ("Courier New", 10))
 
 #Kidinfo
 #Name
@@ -89,7 +89,7 @@ genderVar = StringVar()
 genderVar.set("Male")
 maleRadio = Radiobutton(genderFrame, text="Male", variable = genderVar, value="Male")
 femaleRadio = Radiobutton(genderFrame, text="Female", variable = genderVar, value="Female")
-otherRadio = Radiobutton(genderFrame, text="Other", variable = genderVar, value="Other")
+# otherRadio = Radiobutton(genderFrame, text="Other", variable = genderVar, value="Other")
 #Program
 programFrame = LabelFrame(kidInfo, text="Program:", font = ("Courier New", 10))
 programVar = StringVar()
@@ -183,9 +183,9 @@ listbox.grid(row=2, column=1)
 
 kids = []
 
-for i in range(100):
-    for i in kids[i]:
-        listbox.insert(END)
+# for i in range(100):
+#     for i in kids[i]:
+#         listbox.insert(END)
 
 # bind listbox to scrollbar
 listbox.config(yscrollcommand=scrollbar.set)
@@ -229,7 +229,7 @@ genderFrame.grid(row=1, column=3, padx = 10, pady = 10)
 #Gender gridding
 maleRadio.grid(row = 1, column = 1, sticky="W")
 femaleRadio.grid(row = 1, column = 2, sticky="W")
-otherRadio.grid(row = 1, column = 3, sticky="W")
+# otherRadio.grid(row = 1, column = 3, sticky="W")
 programFrame.grid(row=4, column=2, columnspan = 3, padx = 10, pady = 10)
 programMenu.grid(row=1, column=1)
 
