@@ -1,4 +1,7 @@
 from tkinter import *
+from tkinter import messagebox
+from PIL import ImageTk, Image
+root = Tk()
 
 def clear():
     for var in vars:
@@ -13,6 +16,17 @@ def clear():
         else:
             var.set("")
 
+def showMsg():
+    img = Image.open("shake.jpg").resize((200,200))
+    shakePhoto = ImageTk.PhotoImage(img)
+    popup = Toplevel(root)
+    popup.wm_title("HZRDOUS")
+    popup.tkraise(root) # This just tells the message to be on top of the root window.
+    mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
+    mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
+    imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
+    imgLabel.image = shakePhoto
+
 #def darkMode():
 #    root.configure(background="black")
 #    for wid in widgets:
@@ -26,7 +40,6 @@ def clear():
 #    for wid in widgets:
 #        wid.config(bg=dbg, fg="black")
 
-root = Tk()
 root.title("Camp Kidney Registration 2019")
 root.iconbitmap()
 dbg = root.cget("background")
@@ -44,6 +57,8 @@ menu.add_cascade(label="Edit", menu=filemenu)
 filemenu.add_command(label="Clear", command = clear)
 #filemenu.add_command(label="Dark Mode", command = darkMode)
 #filemenu.add_command(label="Light Mode", command = lightMode)
+
+creditButton = Button(mainframe, command = showMsg, width=1, height=1)
 
 infoLabel = Label(regframe, text="Kid Info", font = ("Courier New", 20))
 campLabel = Label(infoFrame, text="Camp Kidney", font = ("Courier New", 20))
@@ -70,8 +85,6 @@ firstNameEntry = Entry(nameFrame)
 lastNameVar = StringVar()
 lastNameChildLabel = Label(nameFrame, text="Last Name:", font = ("Courier New", 8))
 lastNameEntry = Entry(nameFrame)
-
-
 #Date of Birth
 dateFrame = LabelFrame(kidInfo, text = "Date of Birth:", font = ("Courier New", 10))
 monthVar = IntVar()
@@ -277,4 +290,5 @@ msCheck2.grid(row = 2, column = 3)
 missCheck2.grid(row = 2, column = 4)
 drCheck2.grid(row = 2, column = 5)
 
+creditButton.grid(row=1, column=1)
 root.mainloop()
