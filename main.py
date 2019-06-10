@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from PIL import ImageTk, Image
+# from PIL import ImageTk, Image
 root = Tk()
 
 def clear():
@@ -16,16 +16,16 @@ def clear():
         else:
             var.set("")
 
-def showMsg():
-    img = Image.open("shake.jpg").resize((200,200))
-    shakePhoto = ImageTk.PhotoImage(img)
-    popup = Toplevel(root)
-    popup.wm_title("HZRDOUS")
-    popup.tkraise(root) # This just tells the message to be on top of the root window.
-    mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
-    mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
-    imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
-    imgLabel.image = shakePhoto
+# def showMsg():
+#     img = Image.open("shake.jpg").resize((200,200))
+#     shakePhoto = ImageTk.PhotoImage(img)
+#     popup = Toplevel(root)
+#     popup.wm_title("HZRDOUS")
+#     popup.tkraise(root) # This just tells the message to be on top of the root window.
+#     mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
+#     mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
+#     imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
+#     imgLabel.image = shakePhoto
 
 #def darkMode():
 #    root.configure(background="black")
@@ -58,7 +58,7 @@ filemenu.add_command(label="Clear", command = clear)
 #filemenu.add_command(label="Dark Mode", command = darkMode)
 #filemenu.add_command(label="Light Mode", command = lightMode)
 
-creditButton = Button(mainframe, command = showMsg, width=1, height=1)
+# creditButton = Button(mainframe, command = showMsg, width=1, height=1)
 
 infoLabel = Label(regframe, text="Kid Info", font = ("Courier New", 20))
 campLabel = Label(infoFrame, text="Camp Kidney", font = ("Courier New", 20))
@@ -67,8 +67,8 @@ nameLabel = Label(infoFrame, text="Full name:", font = ("Courier New", 10))
 dateOfBirthLabel = Label(infoFrame, text="Date of Birth:", font = ("Courier New", 10))
 genderLabel = Label(infoFrame, text="Gender:", font = ("Courier New", 10))
 
-months = list(range(1, 12))
-days = list(range(1, 31))
+months = list(range(1, 13))
+days = list(range(1, 32))
 daysOdd = list(range(1, 30))
 daysFeb = list(range(1, 28))
 years = list(range(2000, 2019))
@@ -114,6 +114,14 @@ programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fi
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
 
+def limitSizeCode(*args):
+    value = postalVar.get()
+    if len(value) > 6: postalVar.set(value[:6])
+
+def limitSizePhone(*args):
+    value = phoneVar.get()
+    if len(value) > 10: phoneVar.set(value[:10])
+
 #HomeInfo
 primaryInfoFrame = LabelFrame(homeInfo, text="Primary Home Info", font = ("Courier New", 10))
 addressVar = StringVar()
@@ -129,9 +137,11 @@ countryVar = StringVar()
 countryLabel = Label(primaryInfoFrame, text="Country:", font = ("Courier New", 10))
 countryEntry = Entry(primaryInfoFrame, textvariable = countryVar)
 postalVar = StringVar()
+postalVar.trace('w', limitSizeCode)
 postalLabel = Label(primaryInfoFrame, text="Postal/Zip Code:", font = ("Courier New", 10))
 postalEntry = Entry(primaryInfoFrame, textvariable = postalVar)
 phoneVar = StringVar()
+phoneVar.trace('w', limitSizePhone)
 phoneLabel = Label(primaryInfoFrame, text="Phone Number:", font = ("Courier New", 10))
 phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 
@@ -179,6 +189,20 @@ mrsCheck1 = Radiobutton(parent1Frame, text="Mrs.", variable=parentVar1, value="M
 msCheck1 = Radiobutton(parent1Frame, text="Ms.", variable=parentVar1, value="Ms.")
 missCheck1 = Radiobutton(parent1Frame, text="Miss.", variable=parentVar1, value="Miss.")
 drCheck1 = Radiobutton(parent1Frame, text="Dr.", variable=parentVar1, value="Dr.")
+fullName1Var = StringVar()
+fullName1Entry = Entry(parent1Frame, textvariable=fullName1Var)
+relationship1Var = StringVar()
+relationship1 = Entry(parent1Frame, textvariable=relationship1Var)
+numberType1Var = StringVar()
+phone1Label = Label(parent1Frame, text="")
+workCheck1 = Radiobutton(parent1Frame, value="Work", variable=numberType1Var)
+cellCheck1 = Radiobutton(parent1Frame, value="Cell", variable=numberType1Var)
+number1Var = StringVar()
+number1Entry = Entry(parent1Frame, textvariable=number1Var)
+email1Var = StringVar()
+email1Label = Label(parent1Frame, text="Email:")
+email1Entry = Entry(parent1Frame, textvariable=email1Var)
+
 
 genderOption2 = LabelFrame(parent2Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
 parentVar2 = StringVar()
@@ -232,10 +256,10 @@ firstNameEntry.grid(row=2, column=1)
 lastNameChildLabel.grid(row=3, column=1)
 lastNameEntry.grid(row=4, column=1)
 dateFrame.grid(row=1, column=2)
-dayLabel.grid(row=1, column=1)
-dayEntry.grid(row=2, column = 1)
-monthLabel.grid(row=1, column=2)
-monthEntry.grid(row=2, column=2)
+monthLabel.grid(row=1, column=1)
+monthEntry.grid(row=2, column = 1)
+dayLabel.grid(row=1, column=2)
+dayEntry.grid(row=2, column=2)
 yearLabel.grid(row=1, column=3)
 yearEntry.grid(row=2, column = 3)
 genderFrame.grid(row=1, column=3, padx = 10, pady = 10)
@@ -290,5 +314,6 @@ msCheck2.grid(row = 2, column = 3)
 missCheck2.grid(row = 2, column = 4)
 drCheck2.grid(row = 2, column = 5)
 
-creditButton.grid(row=1, column=1)
+
+# creditButton.grid(row=1, column=1)
 root.mainloop()
