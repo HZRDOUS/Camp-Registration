@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-# from PIL import ImageTk, Image
+from PIL import ImageTk, Image
 root = Tk()
 
 def clear():
@@ -16,16 +16,16 @@ def clear():
         else:
             var.set("")
 
-# def showMsg():
-#     img = Image.open("shake.jpg").resize((200,200))
-#     shakePhoto = ImageTk.PhotoImage(img)
-#     popup = Toplevel(root)
-#     popup.wm_title("HZRDOUS")
-#     popup.tkraise(root) # This just tells the message to be on top of the root window.
-#     mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
-#     mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
-#     imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
-#     imgLabel.image = shakePhoto
+def showMsg():
+    img = Image.open("shake.jpg").resize((200,200))
+    shakePhoto = ImageTk.PhotoImage(img)
+    popup = Toplevel(root)
+    popup.wm_title("HZRDOUS")
+    popup.tkraise(root) # This just tells the message to be on top of the root window.
+    mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
+    mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
+    imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
+    imgLabel.image = shakePhoto
 
 #def darkMode():
 #    root.configure(background="black")
