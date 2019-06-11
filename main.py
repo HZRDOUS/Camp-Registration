@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from PIL import ImageTk, Image
+# from PIL import ImageTk, Image
 root = Tk()
 
 def clear():
@@ -16,16 +16,16 @@ def clear():
         else:
             var.set("")
 
-def showMsg():
-    img = Image.open("shake.jpg").resize((200,200))
-    shakePhoto = ImageTk.PhotoImage(img)
-    popup = Toplevel(root)
-    popup.wm_title("HZRDOUS")
-    popup.tkraise(root) # This just tells the message to be on top of the root window.
-    mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
-    mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
-    imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
-    imgLabel.image = shakePhoto
+# def showMsg():
+#     img = Image.open("shake.jpg").resize((200,200))
+#     shakePhoto = ImageTk.PhotoImage(img)
+#     popup = Toplevel(root)
+#     popup.wm_title("HZRDOUS")
+#     popup.tkraise(root) # This just tells the message to be on top of the root window.
+#     mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
+#     mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
+#     imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
+#     imgLabel.image = shakePhoto
 
 #def darkMode():
 #    root.configure(background="black")
@@ -111,6 +111,10 @@ programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fi
             "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
             "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
             "Beyond Scared Straight (Camp Edition)"]
+programPriceVar = IntVar()
+programPriceVar.set(0)
+programPrice = [0, 100, 100, 100, 500, 350, 50, 700, 1000, 10, 1, 0, 2000]
+
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
 
@@ -190,18 +194,21 @@ msCheck1 = Radiobutton(parent1Frame, text="Ms.", variable=parentVar1, value="Ms.
 missCheck1 = Radiobutton(parent1Frame, text="Miss.", variable=parentVar1, value="Miss.")
 drCheck1 = Radiobutton(parent1Frame, text="Dr.", variable=parentVar1, value="Dr.")
 fullName1Var = StringVar()
-fullName1Entry = Entry(parent1Frame, textvariable=fullName1Var)
+fullName1Label = Label(parent1Frame, text="Full Name: ")
+fullName1Entry = Entry(parent1Frame, textvariable=fullName1Var, width=40)
 relationship1Var = StringVar()
-relationship1 = Entry(parent1Frame, textvariable=relationship1Var)
+relationship1Label = Label(parent1Frame, text="Relationship: ")
+relationship1Entry = Entry(parent1Frame, textvariable=relationship1Var, width=40)
 numberType1Var = StringVar()
-phone1Label = Label(parent1Frame, text="")
-workCheck1 = Radiobutton(parent1Frame, value="Work", variable=numberType1Var)
-cellCheck1 = Radiobutton(parent1Frame, value="Cell", variable=numberType1Var)
+numberType1Var.set("Work")
+phone1Label = Label(parent1Frame, text="Phone:")
+workCheck1 = Radiobutton(parent1Frame, text="Work", value="Work", variable=numberType1Var)
+cellCheck1 = Radiobutton(parent1Frame, text="Cell", value="Cell", variable=numberType1Var)
 number1Var = StringVar()
 number1Entry = Entry(parent1Frame, textvariable=number1Var)
 email1Var = StringVar()
 email1Label = Label(parent1Frame, text="Email:")
-email1Entry = Entry(parent1Frame, textvariable=email1Var)
+email1Entry = Entry(parent1Frame, textvariable=email1Var, width=40)
 
 
 genderOption2 = LabelFrame(parent2Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
@@ -212,6 +219,68 @@ mrsCheck2 = Radiobutton(parent2Frame, text="Mrs.", variable=parentVar2, value="M
 msCheck2 = Radiobutton(parent2Frame, text="Ms.", variable=parentVar2, value="Ms.")
 missCheck2 = Radiobutton(parent2Frame, text="Miss.", variable=parentVar2, value="Miss.")
 drCheck2 = Radiobutton(parent2Frame, text="Dr.", variable=parentVar2, value="Dr.")
+fullName2Var = StringVar()
+fullName2Label = Label(parent2Frame, text="Full Name: ")
+fullName2Entry = Entry(parent2Frame, textvariable=fullName2Var, width=40)
+relationship2Var = StringVar()
+relationship2Label = Label(parent2Frame, text="Relationship: ")
+relationship2Entry = Entry(parent2Frame, textvariable=relationship2Var, width=40)
+numberType2Var = StringVar()
+numberType2Var.set("Work")
+phone2Label = Label(parent2Frame, text="Phone")
+workCheck2 = Radiobutton(parent2Frame, text="Work", value="Work", variable=numberType2Var)
+cellCheck2 = Radiobutton(parent2Frame, text="Cell", value="Cell", variable=numberType2Var)
+number2Var = StringVar()
+number2Entry = Entry(parent2Frame, textvariable=number2Var)
+email2Var = StringVar()
+email2Label = Label(parent2Frame, text="Email:")
+email2Entry = Entry(parent2Frame, textvariable=email2Var,width=40)
+
+#Payment info
+
+def limitSizeCreditNumber():
+    value = creditNumberVar.get()
+    if len(value) > 10: creditNumberVar.set(value[:10])
+
+def limitSizeCvv():
+    value = cvvVar.get()
+    if len(value) > 10: cvvVar.set(value[:10])
+
+yearExpiry = list(range(2019, 2027))
+
+paymentFrame = Label(infoFrame, text="Payment Info", font = ("Courier New", 10))
+paymentTypeVar = StringVar()
+paymentTypeFrame = LabelFrame(paymentFrame, text="Payment Type", font = ("Courier New", 10))
+visaCheck = Radiobutton(paymentTypeFrame, text="Visa", value="Visa", variable=paymentTypeVar)
+mcCheck = Radiobutton(paymentTypeFrame, text="Mastercard", value="Mastercard", variable=paymentTypeVar)
+amexCheck = Radiobutton(paymentTypeFrame, text="American Express", value="American Express", variable=paymentTypeVar)
+paymentDetailsFrame = LabelFrame(paymentFrame, text="Payment Details", font = ("Courier New", 10))
+creditNumberVar = StringVar()
+creditNumberVar.trace('w', limitSizeCreditNumber)
+creditNumberLabel = Label(paymentDetailsFrame, text="16 Digit Number:", font = ("Courier New", 10))
+creditNumberEntry = Entry(paymentDetailsFrame, textvariable=creditNumberVar)
+cvvVar = StringVar()
+cvvVar.trace('w', limitSizeCvv)
+cvvLabel = Label(paymentDetailsFrame, text="3 digits on back:", font = ("Courier New", 10))
+cvvEntry = Entry(paymentDetailsFrame, textvariable=cvvVar)
+expiryDateMonthVar = IntVar()
+expiryDateYearVar = IntVar()
+expiryLabel = Label(paymentDetailsFrame, text="Expiry Date: ", font = ("Courier New", 10))
+expiryMonthMenu = OptionMenu(paymentDetailsFrame, expiryDateMonthVar, months)
+expiryYearMenu = OptionMenu(paymentDetailsFrame, expiryDateYearVar, yearExpiry)
+
+#Price
+def checkProgram():
+    for i in programs:
+        while True:
+            if str(programs[i]) == str(programVar):
+                programPriceVar.set(programPrice[i])
+            else:
+                continue
+
+priceFrame = Frame(infoFrame)
+priceLabel = Label(priceFrame, textvariable=programPriceVar)
+priceButton = Button(priceFrame, text="Get Price", command = checkProgram)
 
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
@@ -272,7 +341,7 @@ programMenu.grid(row=1, column=1)
 
 #homeInfo gridding
 #Home Info
-primaryInfoFrame.grid(row=1, column=1, sticky = "W")
+primaryInfoFrame.grid(row=1, column=1, sticky = "S")
 addressLabel.grid(row=1, column=1)
 addressEntry.grid(row=1, column=2, columnspan = 3)
 cityLabel.grid(row = 2, column=1)
@@ -307,13 +376,39 @@ mrsCheck1.grid(row = 2, column = 2)
 msCheck1.grid(row = 2, column = 3)
 missCheck1.grid(row = 2, column = 4)
 drCheck1.grid(row = 2, column = 5)
+fullName1Label.grid(row=3, column=1)
+fullName1Entry.grid(row=3, column=2, columnspan = 5)
+relationship1Label.grid(row=4, column=1)
+relationship1Entry.grid(row=4, column=2, columnspan = 5)
+phone1Label.grid(row=5, column=1)
+workCheck1.grid(row=5, column=2)
+cellCheck1.grid(row=5,column=3)
+number1Entry.grid(row=5, column=4)
+email1Label.grid(row=6, column=1)
+email1Entry.grid(row=6, column=2, columnspan = 5)
+
+
 genderOption2.grid(row = 2, column = 1)
 mrCheck2.grid(row = 2, column = 1)
 mrsCheck2.grid(row = 2, column = 2)
 msCheck2.grid(row = 2, column = 3)
 missCheck2.grid(row = 2, column = 4)
 drCheck2.grid(row = 2, column = 5)
+fullName2Label.grid(row=3, column=1)
+fullName2Entry.grid(row=3, column=2, columnspan = 5)
+relationship2Label.grid(row=4, column=1)
+relationship2Entry.grid(row=4, column=2, columnspan = 5)
+phone2Label.grid(row=5, column=1)
+workCheck2.grid(row=5, column=2)
+cellCheck2.grid(row=5,column=3)
+number2Entry.grid(row=5, column=4)
+email2Label.grid(row=6, column=1)
+email2Entry.grid(row=6, column=2, columnspan = 5)
 
+#price
+priceFrame.grid(row=5, column=1, sticky='w')
+priceLabel.grid(row=1, column=1, sticky='s')
+priceButton.grid(row=2, column=1, sticky='s')
 
 # creditButton.grid(row=1, column=1)
 root.mainloop()
