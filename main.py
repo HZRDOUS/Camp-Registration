@@ -3,6 +3,39 @@ from tkinter import messagebox
 # from PIL import ImageTk, Image
 root = Tk()
 
+firstName = []
+lastName = []
+monthDob = []
+dayDob = []
+yearDob = []
+gender = []
+program = []
+address = []
+city = []
+province = []
+country = []
+postal = []
+phone = []
+livesWith = []
+title1 = []
+parentName1 = []
+relationship1 = []
+phoneType1 = []
+phone1 = []
+email1 = []
+title2 = []
+parentName2 = []
+relationship2 = []
+phoneType2 = []
+phone2 = []
+email2 = []
+pricePaid = []
+payment = []
+discount = []
+creditNumber = []
+cvv = []
+expiryDate = []
+
 def clear():
     for var in vars:
         if var == genderVar:
@@ -115,9 +148,9 @@ programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fi
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
 
-programPriceVar = StringVar()
-programPrice = ["$0", "$100", "$100", "$100", "$500", "$350", "$50", "$700", "$1000", "$10", "$1", "$0", "$2000"]
-programPriceVar.set(programPrice[0])
+programPriceVar = DoubleVar()
+programPriceVar.set(0.00)
+programPrice = [0.00, 100.00, 100.00, 100.00, 500.00, 350.00, 50.00, 700.00, 1000.00, 10.00, 1.00, 0.00, 2000.00]
 
 def limitSizeCode(*args):
     value = postalVar.get()
@@ -228,7 +261,7 @@ relationship2Label = Label(parent2Frame, text="Relationship: ")
 relationship2Entry = Entry(parent2Frame, textvariable=relationship2Var, width=40)
 numberType2Var = StringVar()
 numberType2Var.set("Work")
-phone2Label = Label(parent2Frame, text="Phone")
+phone2Label = Label(parent2Frame, text="Phone:")
 workCheck2 = Radiobutton(parent2Frame, text="Work", value="Work", variable=numberType2Var)
 cellCheck2 = Radiobutton(parent2Frame, text="Cell", value="Cell", variable=numberType2Var)
 number2Var = StringVar()
@@ -247,7 +280,7 @@ def limitSizeCvv(*args):
     value = cvvVar.get()
     if len(value) > 3: cvvVar.set(value[:3])
 
-yearExpiry = list(range(2019, 2027))
+yearExpiry = list(range(19, 27))
 
 paymentFrame = LabelFrame(infoFrame, text="Payment Info", font = ("Courier New", 10))
 paymentTypeVar = StringVar()
@@ -268,8 +301,9 @@ cvvEntry = Entry(paymentDetailsFrame, textvariable=cvvVar, width=10)
 expiryDateMonthVar = IntVar()
 expiryDateYearVar = IntVar()
 expiryLabel = Label(paymentDetailsFrame, text="Expiry Date: ", font = ("Courier New", 10))
-expiryMonthMenu = OptionMenu(paymentDetailsFrame, expiryDateMonthVar, *months)
-expiryYearMenu = OptionMenu(paymentDetailsFrame, expiryDateYearVar, *yearExpiry)
+expiryMonthMenu = Spinbox(paymentDetailsFrame, textvariable = expiryDateMonthVar, values=months, width=5)
+slashLabel = Label(paymentDetailsFrame, text="/")
+expiryYearMenu = Spinbox(paymentDetailsFrame, textvariable = expiryDateYearVar, values=yearExpiry, width=5)
 
 #Price
 def checkProgram():
@@ -277,29 +311,43 @@ def checkProgram():
     for item in programs:
         if programs[i] == programVar.get():
             programPriceVar.set(programPrice[i])
+            if discountVar.get() != 0:
+                programPriceVar.set(programPrice[i] * discountVar.get())
+            else:
+                pass
         else:
             i += 1
             continue
 
 
 priceFrame = Frame(paymentFrame)
+dollarLabel = Label(priceFrame, text="$", font = ("Courier New", 12))
 priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier New", 12))
 priceButton = Button(priceFrame, text="Get Price", command = checkProgram)
 
+discountFrame = LabelFrame(paymentFrame, text="Discount?")
+discountVar = DoubleVar()
+discountVar.set
+discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onvalue=0.950, offvalue=0, variable=discountVar, font = ("Courier New", 10))
+
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
-listbox = Listbox(regframe, width = 75)
-listbox.grid(row=2, column=1)
+listBox = Listbox(regframe, width = 75)
+listBox.grid(row=2, column=1)
 
-kids = []
+def enterInfo():
+    firstName.append(firstNameVar.get())
+    listBox.insert(0, firstName[0])
+count = 0
+enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
 
 # for i in range(100):
 #     for i in kids[i]:
 #         listbox.insert(END)
 
 # bind listbox to scrollbar
-listbox.config(yscrollcommand=scrollbar.set)
-scrollbar.config(command=listbox.yview)
+listBox.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=listBox.yview)
 
 vars = [firstNameVar, lastNameVar, monthVar, dayVar, yearVar, genderVar, programVar, addressVar,
         cityVar, provinceVar, countryVar, postalVar, phoneVar]
@@ -410,23 +458,30 @@ email2Label.grid(row=6, column=1)
 email2Entry.grid(row=6, column=2, columnspan = 5)
 
 #price
-priceFrame.grid(row=2, column=2, sticky='w')
-priceLabel.grid(row=1, column=1, sticky='s')
-priceButton.grid(row=2, column=1, sticky='s')
+priceFrame.grid(row=1, column=3, sticky='w')
+dollarLabel.grid(row=1, column=1, sticky="s")
+priceLabel.grid(row=1, column=2, sticky='s')
+priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
+
+discountFrame.grid(row=1, column=2, sticky='w')
+discountCheck.grid(row=1, column=1)
 
 paymentFrame.grid(row=5, column = 1)
 paymentTypeFrame.grid(row=1, column=1)
 visaCheck.grid(row=1, column=1)
 mcCheck.grid(row=1, column=2)
 amexCheck.grid(row=1, column=3)
-paymentDetailsFrame.grid(row=2, column=1)
+paymentDetailsFrame.grid(row=2, column=1, columnspan=3)
 creditNumberLabel.grid(row=1, column=1)
 creditNumberEntry.grid(row=1, column=2)
 cvvLabel.grid(row=1, column=3)
 cvvEntry.grid(row=1, column=4)
 expiryLabel.grid(row=1, column=5)
 expiryMonthMenu.grid(row=1, column=6)
-expiryYearMenu.grid(row=1, column=7)
+slashLabel.grid(row=1, column=7)
+expiryYearMenu.grid(row=1, column=8)
+
+enterButton.grid(row=6, column=1)
 
 
 # creditButton.grid(row=1, column=1)
