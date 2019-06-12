@@ -10,6 +10,8 @@ dayDob = []
 yearDob = []
 gender = []
 program = []
+price = []
+discount = []
 address = []
 city = []
 province = []
@@ -349,22 +351,55 @@ listBox.grid(row=2, column=1)
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
 
-def counters():
-    counters.i = 0
+i = 0
+counteri = 0
+studentCount = 1
 
 def enterInfo():
-    i = 0
-    counteri = 0
+    global counteri
+    global i
+    global studentCount
     firstName.append(firstNameVar.get())
     lastName.append(lastNameVar.get())
-    listBox.insert(counteri, str(counteri + 1) + ". " + firstName[i] + " " + lastName[i])
+    listBox.insert(counteri, str(i + 1) + ". " + firstName[i] + " " + lastName[i])
+
     counteri += 1
+
     monthDob.append(monthVar.get())
     dayDob.append(dayVar.get())
     yearDob.append(yearVar.get())
     listBox.insert(counteri, "- " + str(dayDob[i]) + "-" + str(monthDob[i]) + "-" + str(yearDob[i]))
 
-i = 0
+    counteri += 1
+
+    gender.append(genderVar.get())
+    listBox.insert(counteri, "- " + gender[i])
+
+    counteri+=1
+
+    program.append(programVar.get())
+    price.append(programPriceVar.get())
+    listBox.insert(counteri, "- Signed up for " + program[i] + " and being charged $" + str(price[i]))
+
+    counteri+=1
+
+    if discountVar.get() != 0: #Check if child applied with discount
+        price.append(discountVar.get())
+        listbox.insert(counteri, "- Applied with a discount of " + discount[i])
+        counteri+=1
+    else:
+        pass
+
+    address.append(addressVar.get())
+    city.append(cityVar.get())
+    province.append(provinceVar.get())
+    country.append(countryVar.get())
+    postal.append(postalVar.get())
+    listBox.insert(counteri, "- " + address[i] + " " + city[i] + ", " + province[i] + ", " + postal[i] + ", " + country[i])
+
+    i += 1
+    counteri += 1
+
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
 
 # for i in range(100):
