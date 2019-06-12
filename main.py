@@ -111,12 +111,13 @@ programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fi
             "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
             "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
             "Beyond Scared Straight (Camp Edition)"]
-programPriceVar = IntVar()
-programPriceVar.set(0)
-programPrice = [0, 100, 100, 100, 500, 350, 50, 700, 1000, 10, 1, 0, 2000]
 
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
+
+programPriceVar = StringVar()
+programPrice = ["$0", "$100", "$100", "$100", "$500", "$350", "$50", "$700", "$1000", "$10", "$1", "$0", "$2000"]
+programPriceVar.set(programPrice[0])
 
 def limitSizeCode(*args):
     value = postalVar.get()
@@ -238,18 +239,19 @@ email2Entry = Entry(parent2Frame, textvariable=email2Var,width=40)
 
 #Payment info
 
-def limitSizeCreditNumber():
+def limitSizeCreditNumber(*args):
     value = creditNumberVar.get()
-    if len(value) > 10: creditNumberVar.set(value[:10])
+    if len(value) > 16: creditNumberVar.set(value[:16])
 
-def limitSizeCvv():
+def limitSizeCvv(*args):
     value = cvvVar.get()
-    if len(value) > 10: cvvVar.set(value[:10])
+    if len(value) > 3: cvvVar.set(value[:3])
 
 yearExpiry = list(range(2019, 2027))
 
-paymentFrame = Label(infoFrame, text="Payment Info", font = ("Courier New", 10))
+paymentFrame = LabelFrame(infoFrame, text="Payment Info", font = ("Courier New", 10))
 paymentTypeVar = StringVar()
+paymentTypeVar.set("Visa")
 paymentTypeFrame = LabelFrame(paymentFrame, text="Payment Type", font = ("Courier New", 10))
 visaCheck = Radiobutton(paymentTypeFrame, text="Visa", value="Visa", variable=paymentTypeVar)
 mcCheck = Radiobutton(paymentTypeFrame, text="Mastercard", value="Mastercard", variable=paymentTypeVar)
@@ -262,24 +264,26 @@ creditNumberEntry = Entry(paymentDetailsFrame, textvariable=creditNumberVar)
 cvvVar = StringVar()
 cvvVar.trace('w', limitSizeCvv)
 cvvLabel = Label(paymentDetailsFrame, text="3 digits on back:", font = ("Courier New", 10))
-cvvEntry = Entry(paymentDetailsFrame, textvariable=cvvVar)
+cvvEntry = Entry(paymentDetailsFrame, textvariable=cvvVar, width=10)
 expiryDateMonthVar = IntVar()
 expiryDateYearVar = IntVar()
 expiryLabel = Label(paymentDetailsFrame, text="Expiry Date: ", font = ("Courier New", 10))
-expiryMonthMenu = OptionMenu(paymentDetailsFrame, expiryDateMonthVar, months)
-expiryYearMenu = OptionMenu(paymentDetailsFrame, expiryDateYearVar, yearExpiry)
+expiryMonthMenu = OptionMenu(paymentDetailsFrame, expiryDateMonthVar, *months)
+expiryYearMenu = OptionMenu(paymentDetailsFrame, expiryDateYearVar, *yearExpiry)
 
 #Price
 def checkProgram():
-    for i in programs:
-        while True:
-            if str(programs[i]) == str(programVar):
-                programPriceVar.set(programPrice[i])
-            else:
-                continue
+    i = 0
+    for item in programs:
+        if programs[i] == programVar.get():
+            programPriceVar.set(programPrice[i])
+        else:
+            i += 1
+            continue
 
-priceFrame = Frame(infoFrame)
-priceLabel = Label(priceFrame, textvariable=programPriceVar)
+
+priceFrame = Frame(paymentFrame)
+priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier New", 12))
 priceButton = Button(priceFrame, text="Get Price", command = checkProgram)
 
 #Regframe declarations
@@ -406,9 +410,24 @@ email2Label.grid(row=6, column=1)
 email2Entry.grid(row=6, column=2, columnspan = 5)
 
 #price
-priceFrame.grid(row=5, column=1, sticky='w')
+priceFrame.grid(row=2, column=2, sticky='w')
 priceLabel.grid(row=1, column=1, sticky='s')
 priceButton.grid(row=2, column=1, sticky='s')
+
+paymentFrame.grid(row=5, column = 1)
+paymentTypeFrame.grid(row=1, column=1)
+visaCheck.grid(row=1, column=1)
+mcCheck.grid(row=1, column=2)
+amexCheck.grid(row=1, column=3)
+paymentDetailsFrame.grid(row=2, column=1)
+creditNumberLabel.grid(row=1, column=1)
+creditNumberEntry.grid(row=1, column=2)
+cvvLabel.grid(row=1, column=3)
+cvvEntry.grid(row=1, column=4)
+expiryLabel.grid(row=1, column=5)
+expiryMonthMenu.grid(row=1, column=6)
+expiryYearMenu.grid(row=1, column=7)
+
 
 # creditButton.grid(row=1, column=1)
 root.mainloop()
