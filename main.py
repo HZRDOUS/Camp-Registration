@@ -114,10 +114,10 @@ homeInfo = LabelFrame(infoFrame, text = "Household Info", font = ("Courier New",
 nameFrame = LabelFrame(kidInfo, text="Full Name:", font = ("Courier New", 10))
 firstNameVar = StringVar()
 firstNameChildLabel = Label(nameFrame, text="First Name:", font = ("Courier New", 8))
-firstNameEntry = Entry(nameFrame)
+firstNameEntry = Entry(nameFrame,  textvariable = firstNameVar,)
 lastNameVar = StringVar()
 lastNameChildLabel = Label(nameFrame, text="Last Name:", font = ("Courier New", 8))
-lastNameEntry = Entry(nameFrame)
+lastNameEntry = Entry(nameFrame,  textvariable = lastNameVar,)
 #Date of Birth
 dateFrame = LabelFrame(kidInfo, text = "Date of Birth:", font = ("Courier New", 10))
 monthVar = IntVar()
@@ -159,6 +159,14 @@ def limitSizeCode(*args):
 def limitSizePhone(*args):
     value = phoneVar.get()
     if len(value) > 10: phoneVar.set(value[:10])
+
+def limitSizeParentPhone1(*args):
+    value = number1Var.get()
+    if len(value) > 10: number1Var.set(value[:10])
+
+def limitSizeParentPhone2(*args):
+    value = number2Var.get()
+    if len(value) > 10: number2Var.set(value[:10])
 
 #HomeInfo
 primaryInfoFrame = LabelFrame(homeInfo, text="Primary Home Info", font = ("Courier New", 10))
@@ -239,6 +247,7 @@ phone1Label = Label(parent1Frame, text="Phone:")
 workCheck1 = Radiobutton(parent1Frame, text="Work", value="Work", variable=numberType1Var)
 cellCheck1 = Radiobutton(parent1Frame, text="Cell", value="Cell", variable=numberType1Var)
 number1Var = StringVar()
+number1Var.trace('w', limitSizeParentPhone1)
 number1Entry = Entry(parent1Frame, textvariable=number1Var)
 email1Var = StringVar()
 email1Label = Label(parent1Frame, text="Email:")
@@ -265,10 +274,12 @@ phone2Label = Label(parent2Frame, text="Phone:")
 workCheck2 = Radiobutton(parent2Frame, text="Work", value="Work", variable=numberType2Var)
 cellCheck2 = Radiobutton(parent2Frame, text="Cell", value="Cell", variable=numberType2Var)
 number2Var = StringVar()
+number2Var.trace('w', limitSizeParentPhone2)
 number2Entry = Entry(parent2Frame, textvariable=number2Var)
 email2Var = StringVar()
 email2Label = Label(parent2Frame, text="Email:")
 email2Entry = Entry(parent2Frame, textvariable=email2Var,width=40)
+
 
 #Payment info
 
@@ -334,11 +345,26 @@ discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onva
 scrollbar = Scrollbar(regframe)
 listBox = Listbox(regframe, width = 75)
 listBox.grid(row=2, column=1)
+# bind listbox to scrollbar
+listBox.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=listBox.yview)
+
+def counters():
+    counters.i = 0
 
 def enterInfo():
+    i = 0
+    counteri = 0
     firstName.append(firstNameVar.get())
-    listBox.insert(0, firstName[0])
-count = 0
+    lastName.append(lastNameVar.get())
+    listBox.insert(counteri, str(counteri + 1) + ". " + firstName[i] + " " + lastName[i])
+    counteri += 1
+    monthDob.append(monthVar.get())
+    dayDob.append(dayVar.get())
+    yearDob.append(yearVar.get())
+    listBox.insert(counteri, "- " + str(dayDob[i]) + "-" + str(monthDob[i]) + "-" + str(yearDob[i]))
+
+i = 0
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
 
 # for i in range(100):
@@ -482,6 +508,7 @@ slashLabel.grid(row=1, column=7)
 expiryYearMenu.grid(row=1, column=8)
 
 enterButton.grid(row=6, column=1)
+
 
 
 # creditButton.grid(row=1, column=1)
