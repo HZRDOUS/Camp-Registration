@@ -384,8 +384,8 @@ def enterInfo():
     counteri+=1
 
     if discountVar.get() != 0: #Check if child applied with discount
-        price.append(discountVar.get())
-        listbox.insert(counteri, "- Applied with a discount of " + discount[i])
+        discount.append(discountVar.get())
+        listBox.insert(counteri, "- Applied with a discount of " + str(discount[i]) + "%")
         counteri+=1
     else:
         pass
