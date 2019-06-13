@@ -397,6 +397,20 @@ def enterInfo():
     postal.append(postalVar.get())
     listBox.insert(counteri, "- " + address[i] + " " + city[i] + ", " + province[i] + ", " + postal[i] + ", " + country[i])
 
+    counteri += 1
+
+    livesWith.append(childLivesWithVar.get())
+    listBox.insert(counteri, "- Lives with " + livesWith[i])
+
+    counteri += 1
+
+    title1.append(parentVar1.get())
+    parentName1.append(fullName1Var.get())
+    relationship1.append(relationship1Var.get())
+    phoneType1.append(numberType1Var.get())
+    email1.append(email1Var.get())
+    listBox.insert(counteri, "- Parent 1: " + title1[i] + parentName1[i] + ", child's " + relationship[i])
+
     i += 1
     counteri += 1
 
