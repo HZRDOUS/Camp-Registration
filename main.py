@@ -199,7 +199,7 @@ def enableOther(): #Enable "Other" radio button and "Other" entry space
     value = enable.get()
     if value == True:
         otherEntry.config(state=NORMAL)
-        childLivesWithVar.set(otherVar)
+        childLivesWithVar.set(otherVar.get())
     else:
         otherEntry.config(state=DISABLED)
 
@@ -323,9 +323,9 @@ def checkProgram():
     i = 0
     for item in programs:
         if programs[i] == programVar.get():
-            programPriceVar.set(programPrice[i])
+            programPriceVar.set("{:.2f}".format(programPrice[i]))
             if discountVar.get() != 0:
-                programPriceVar.set(programPrice[i] * discountVar.get())
+                programPriceVar.set("{:.2f}".format(programPrice[i] * discountVar.get()))
             else:
                 pass
         else:
@@ -345,7 +345,7 @@ discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onva
 
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
-listBox = Listbox(regframe, width = 75)
+listBox = Listbox(regframe, width = 75, height=30)
 listBox.grid(row=2, column=1)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
@@ -361,7 +361,8 @@ def enterInfo():
     global studentCount
     firstName.append(firstNameVar.get())
     lastName.append(lastNameVar.get())
-    listBox.insert(counteri, str(i + 1) + ". " + firstName[i] + " " + lastName[i])
+    program.append(programVar.get())
+    listBox.insert(counteri, f"{str(i+1)}, {firstName[i]} {lastName[i]}, signed up for {program[i]}")
 
     counteri += 1
 
@@ -377,15 +378,15 @@ def enterInfo():
 
     counteri+=1
 
-    program.append(programVar.get())
+
     price.append(programPriceVar.get())
-    listBox.insert(counteri, "- Signed up for " + program[i] + " and being charged $" + str(price[i]))
+    listBox.insert(counteri, "- Signed up for " + program[i] + " and being charged $" + f"{price[i]:.2f}")
 
     counteri+=1
 
     if discountVar.get() != 0: #Check if child applied with discount
         discount.append(discountVar.get())
-        listBox.insert(counteri, "- Applied with a discount of " + str(discount[i]) + "%")
+        listBox.insert(counteri, "- Applied with a discount of 5%")
         counteri+=1
     else:
         pass
@@ -395,7 +396,12 @@ def enterInfo():
     province.append(provinceVar.get())
     country.append(countryVar.get())
     postal.append(postalVar.get())
-    listBox.insert(counteri, "- " + address[i] + " " + city[i] + ", " + province[i] + ", " + postal[i] + ", " + country[i])
+    phone.append(phoneVar.get())
+    listBox.insert(counteri, f"- {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}")
+
+    counteri += 1
+
+    listBox.insert(counteri, f"{phone[i]}")
 
     counteri += 1
 
@@ -409,7 +415,7 @@ def enterInfo():
     relationship1.append(relationship1Var.get())
     phoneType1.append(numberType1Var.get())
     email1.append(email1Var.get())
-    listBox.insert(counteri, "- Parent 1: " + title1[i] + parentName1[i] + ", child's " + relationship[i])
+    listBox.insert(counteri, f"- Parent 1: {title1[i]} {parentName1[i]}, {relationship1[i]}")
 
     i += 1
     counteri += 1
@@ -431,7 +437,7 @@ widgets = [mainframe, infoLabel, menu, filemenu, campLabel, nameLabel, firstName
            lastNameEntry, dateOfBirthLabel]
 #Grid
 root.minsize(width=1100, height=700)
-root.maxsize(width=1100, height=900)
+root.maxsize(width=1200, height=900)
 #Frame Gridding
 mainframe.grid(row=1, column = 1, padx = 10, pady = 10)
 infoFrame.grid(row = 1, column = 1)
