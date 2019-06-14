@@ -196,34 +196,25 @@ phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 #Parent Info
 
 def enableOther(): #Enable "Other" radio button and "Other" entry space
-    value = enable.get()
-    if value == True:
-        otherEntry.config(state=NORMAL)
-        childLivesWithVar.set(otherVar.get())
-    else:
-        otherEntry.config(state=DISABLED)
+    otherEntry.config(state=NORMAL)
 
-def checkOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
-    enabled = enable.get()
-    if enabled == True:
-        enable.set(False)
-        otherEntry.configure(state = DISABLED)
-    elif enabled == None:
-        pass
+def disableOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
+    enable.set(False)
+    otherEntry.configure(state = DISABLED)
 
 parentInfoFrame = LabelFrame(homeInfo, text="Parent Info", font = ("Courier New", 10))
 childLivesWithFrame = LabelFrame(parentInfoFrame, text="Child Lives With:", font = ("Courier New", 10), width = 300)
 childLivesWithVar = StringVar()
 childLivesWithVar.set("Both Parents")
-bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = checkOther)
-fatherCheck = Radiobutton(childLivesWithFrame, text="Father", variable = childLivesWithVar, value="Father", command = checkOther)
-motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLivesWithVar, value="Mother", command = checkOther)
-grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = checkOther)
-guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = checkOther)
+bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = disableOther)
+fatherCheck = Radiobutton(childLivesWithFrame, text="Father", variable = childLivesWithVar, value="Father", command = disableOther)
+motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLivesWithVar, value="Mother", command = disableOther)
+grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = disableOther)
+guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = disableOther)
 otherVar = StringVar()
-otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
+otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=DISABLED)
 enable = BooleanVar()
-otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=enable, value=True, command = enableOther)
+otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Type here", command = enableOther)
 
 
 
@@ -359,6 +350,7 @@ def enterInfo():
     global counteri
     global i
     global studentCount
+
     firstName.append(firstNameVar.get())
     lastName.append(lastNameVar.get())
     program.append(programVar.get())
@@ -406,7 +398,7 @@ def enterInfo():
     counteri += 1
 
     livesWith.append(childLivesWithVar.get())
-    listBox.insert(counteri, "- Lives with " + livesWith[i])
+    listBox.insert(counteri, f"- Lives with {livesWith[i]}")
 
     counteri += 1
 
@@ -414,8 +406,33 @@ def enterInfo():
     parentName1.append(fullName1Var.get())
     relationship1.append(relationship1Var.get())
     phoneType1.append(numberType1Var.get())
+    phone1.append(number1Var.get())
     email1.append(email1Var.get())
     listBox.insert(counteri, f"- Parent 1: {title1[i]} {parentName1[i]}, {relationship1[i]}")
+    counteri += 1
+    listBox.insert(counteri, f"- Contact through {phoneType1[i]} at {phone1[i]}, or email at {email1[i]}")
+
+    counteri += 1
+
+    title2.append(parentVar2.get())
+    parentName2.append(fullName2Var.get())
+    relationship2.append(relationship2Var.get())
+    phoneType2.append(numberType2Var.get())
+    phone2.append(number2Var.get())
+    email2.append(email2Var.get())
+    listBox.insert(counteri, f"- Parent 2: {title2[i]} {parentName2[i]}, {relationship2[i]}")
+    counteri += 1
+    listBox.insert(counteri, f"- Contact through {phoneType2[i]} at {phone2[i]}, or email at {email2[i]}")
+
+    counteri += 1
+
+    payment.append(paymentTypeVar.get())
+    creditNumber.append(creditNumberVar.get())
+    cvv.append(cvvVar.get())
+    expVarM = expiryDateMonthVar.get()
+    expVarY = expiryDateYearVar.get()
+    expiryDate.append(f"{expVarM} / {expVarY}")
+    listBox.insert(counteri, f"- Paid with {payment[i]}, number: {creditNumber[i]}, CVV: {cvv[i]}, expires {expiryDate[i]}")
 
     i += 1
     counteri += 1
