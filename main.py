@@ -19,24 +19,6 @@ country = []
 postal = []
 phone = []
 livesWith = []
-title1 = []
-parentName1 = []
-relationship1 = []
-phoneType1 = []
-phone1 = []
-email1 = []
-title2 = []
-parentName2 = []
-relationship2 = []
-phoneType2 = []
-phone2 = []
-email2 = []
-pricePaid = []
-payment = []
-discount = []
-creditNumber = []
-cvv = []
-expiryDate = []
 
 def clear():
     for var in vars:
@@ -216,99 +198,6 @@ otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=
 enable = BooleanVar()
 otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Type here", command = enableOther)
 
-
-
-parent1Frame = LabelFrame(parentInfoFrame, text="Parent 1:", font = ("Courier New", 10))
-parent2Frame = LabelFrame(parentInfoFrame, text="Parent 2:", font = ("Courier New", 10))
-genderOption1 = LabelFrame(parent1Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
-parentVar1 = StringVar()
-parentVar1.set("Mr.")
-mrCheck1 = Radiobutton(parent1Frame, text="Mr.", variable=parentVar1, value="Mr.")
-mrsCheck1 = Radiobutton(parent1Frame, text="Mrs.", variable=parentVar1, value="Mrs.")
-msCheck1 = Radiobutton(parent1Frame, text="Ms.", variable=parentVar1, value="Ms.")
-missCheck1 = Radiobutton(parent1Frame, text="Miss.", variable=parentVar1, value="Miss.")
-drCheck1 = Radiobutton(parent1Frame, text="Dr.", variable=parentVar1, value="Dr.")
-fullName1Var = StringVar()
-fullName1Label = Label(parent1Frame, text="Full Name: ")
-fullName1Entry = Entry(parent1Frame, textvariable=fullName1Var, width=40)
-relationship1Var = StringVar()
-relationship1Label = Label(parent1Frame, text="Relationship: ")
-relationship1Entry = Entry(parent1Frame, textvariable=relationship1Var, width=40)
-numberType1Var = StringVar()
-numberType1Var.set("Work")
-phone1Label = Label(parent1Frame, text="Phone:")
-workCheck1 = Radiobutton(parent1Frame, text="Work", value="Work", variable=numberType1Var)
-cellCheck1 = Radiobutton(parent1Frame, text="Cell", value="Cell", variable=numberType1Var)
-number1Var = StringVar()
-number1Var.trace('w', limitSizeParentPhone1)
-number1Entry = Entry(parent1Frame, textvariable=number1Var)
-email1Var = StringVar()
-email1Label = Label(parent1Frame, text="Email:")
-email1Entry = Entry(parent1Frame, textvariable=email1Var, width=40)
-
-
-genderOption2 = LabelFrame(parent2Frame, text="Parent/Guardian #1:", font = ("Courier New", 10))
-parentVar2 = StringVar()
-parentVar2.set("Mr.")
-mrCheck2 = Radiobutton(parent2Frame, text="Mr.", variable=parentVar2, value="Mr.")
-mrsCheck2 = Radiobutton(parent2Frame, text="Mrs.", variable=parentVar2, value="Mrs.")
-msCheck2 = Radiobutton(parent2Frame, text="Ms.", variable=parentVar2, value="Ms.")
-missCheck2 = Radiobutton(parent2Frame, text="Miss.", variable=parentVar2, value="Miss.")
-drCheck2 = Radiobutton(parent2Frame, text="Dr.", variable=parentVar2, value="Dr.")
-fullName2Var = StringVar()
-fullName2Label = Label(parent2Frame, text="Full Name: ")
-fullName2Entry = Entry(parent2Frame, textvariable=fullName2Var, width=40)
-relationship2Var = StringVar()
-relationship2Label = Label(parent2Frame, text="Relationship: ")
-relationship2Entry = Entry(parent2Frame, textvariable=relationship2Var, width=40)
-numberType2Var = StringVar()
-numberType2Var.set("Work")
-phone2Label = Label(parent2Frame, text="Phone:")
-workCheck2 = Radiobutton(parent2Frame, text="Work", value="Work", variable=numberType2Var)
-cellCheck2 = Radiobutton(parent2Frame, text="Cell", value="Cell", variable=numberType2Var)
-number2Var = StringVar()
-number2Var.trace('w', limitSizeParentPhone2)
-number2Entry = Entry(parent2Frame, textvariable=number2Var)
-email2Var = StringVar()
-email2Label = Label(parent2Frame, text="Email:")
-email2Entry = Entry(parent2Frame, textvariable=email2Var,width=40)
-
-
-#Payment info
-
-def limitSizeCreditNumber(*args):
-    value = creditNumberVar.get()
-    if len(value) > 16: creditNumberVar.set(value[:16])
-
-def limitSizeCvv(*args):
-    value = cvvVar.get()
-    if len(value) > 3: cvvVar.set(value[:3])
-
-yearExpiry = list(range(19, 27))
-
-paymentFrame = LabelFrame(infoFrame, text="Payment Info", font = ("Courier New", 10))
-paymentTypeVar = StringVar()
-paymentTypeVar.set("Visa")
-paymentTypeFrame = LabelFrame(paymentFrame, text="Payment Type", font = ("Courier New", 10))
-visaCheck = Radiobutton(paymentTypeFrame, text="Visa", value="Visa", variable=paymentTypeVar)
-mcCheck = Radiobutton(paymentTypeFrame, text="Mastercard", value="Mastercard", variable=paymentTypeVar)
-amexCheck = Radiobutton(paymentTypeFrame, text="American Express", value="American Express", variable=paymentTypeVar)
-paymentDetailsFrame = LabelFrame(paymentFrame, text="Payment Details", font = ("Courier New", 10))
-creditNumberVar = StringVar()
-creditNumberVar.trace('w', limitSizeCreditNumber)
-creditNumberLabel = Label(paymentDetailsFrame, text="16 Digit Number:", font = ("Courier New", 10))
-creditNumberEntry = Entry(paymentDetailsFrame, textvariable=creditNumberVar)
-cvvVar = StringVar()
-cvvVar.trace('w', limitSizeCvv)
-cvvLabel = Label(paymentDetailsFrame, text="3 digits on back:", font = ("Courier New", 10))
-cvvEntry = Entry(paymentDetailsFrame, textvariable=cvvVar, width=10)
-expiryDateMonthVar = IntVar()
-expiryDateYearVar = IntVar()
-expiryLabel = Label(paymentDetailsFrame, text="Expiry Date: ", font = ("Courier New", 10))
-expiryMonthMenu = Spinbox(paymentDetailsFrame, textvariable = expiryDateMonthVar, values=months, width=5)
-slashLabel = Label(paymentDetailsFrame, text="/")
-expiryYearMenu = Spinbox(paymentDetailsFrame, textvariable = expiryDateYearVar, values=yearExpiry, width=5)
-
 #Price
 def checkProgram():
     i = 0
@@ -324,12 +213,12 @@ def checkProgram():
             continue
 
 
-priceFrame = Frame(paymentFrame)
+priceFrame = Frame(kidInfo)
 dollarLabel = Label(priceFrame, text="$", font = ("Courier New", 12))
 priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier New", 12))
 priceButton = Button(priceFrame, text="Get Price", command = checkProgram)
 
-discountFrame = LabelFrame(paymentFrame, text="Discount?")
+discountFrame = LabelFrame(kidInfo, text="Discount?")
 discountVar = DoubleVar()
 discountVar.set
 discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onvalue=0.950, offvalue=0, variable=discountVar, font = ("Courier New", 10))
@@ -341,6 +230,16 @@ listBox.grid(row=2, column=1)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
+
+scrollbar = Scrollbar(regframe)
+listBox2 = Listbox(regframe, width = 75, height=30)
+
+programMenu
+
+listBox2.grid(row=3, column=1)
+# bind listbox to scrollbar
+listBox2.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=listBox2.yview)
 
 i = 0
 counteri = 0
@@ -399,40 +298,6 @@ def enterInfo():
 
     livesWith.append(childLivesWithVar.get())
     listBox.insert(counteri, f"- Lives with {livesWith[i]}")
-
-    counteri += 1
-
-    title1.append(parentVar1.get())
-    parentName1.append(fullName1Var.get())
-    relationship1.append(relationship1Var.get())
-    phoneType1.append(numberType1Var.get())
-    phone1.append(number1Var.get())
-    email1.append(email1Var.get())
-    listBox.insert(counteri, f"- Parent 1: {title1[i]} {parentName1[i]}, {relationship1[i]}")
-    counteri += 1
-    listBox.insert(counteri, f"- Contact through {phoneType1[i]} at {phone1[i]}, or email at {email1[i]}")
-
-    counteri += 1
-
-    title2.append(parentVar2.get())
-    parentName2.append(fullName2Var.get())
-    relationship2.append(relationship2Var.get())
-    phoneType2.append(numberType2Var.get())
-    phone2.append(number2Var.get())
-    email2.append(email2Var.get())
-    listBox.insert(counteri, f"- Parent 2: {title2[i]} {parentName2[i]}, {relationship2[i]}")
-    counteri += 1
-    listBox.insert(counteri, f"- Contact through {phoneType2[i]} at {phone2[i]}, or email at {email2[i]}")
-
-    counteri += 1
-
-    payment.append(paymentTypeVar.get())
-    creditNumber.append(creditNumberVar.get())
-    cvv.append(cvvVar.get())
-    expVarM = expiryDateMonthVar.get()
-    expVarY = expiryDateYearVar.get()
-    expiryDate.append(f"{expVarM} / {expVarY}")
-    listBox.insert(counteri, f"- Paid with {payment[i]}, number: {creditNumber[i]}, CVV: {cvv[i]}, expires {expiryDate[i]}")
 
     i += 1
     counteri += 1
@@ -517,44 +382,6 @@ guardianCheck.grid(row = 1, column = 5)
 otherCheck.grid(row = 1, column = 6)
 otherEntry.grid(row = 1, column = 7)
 
-#Parents 1 and 2
-parent1Frame.grid(row = 2, column = 1)
-parent2Frame.grid(row = 2, column = 2)
-genderOption1.grid(row = 2, column = 1)
-mrCheck1.grid(row = 2, column = 1)
-mrsCheck1.grid(row = 2, column = 2)
-msCheck1.grid(row = 2, column = 3)
-missCheck1.grid(row = 2, column = 4)
-drCheck1.grid(row = 2, column = 5)
-fullName1Label.grid(row=3, column=1)
-fullName1Entry.grid(row=3, column=2, columnspan = 5)
-relationship1Label.grid(row=4, column=1)
-relationship1Entry.grid(row=4, column=2, columnspan = 5)
-phone1Label.grid(row=5, column=1)
-workCheck1.grid(row=5, column=2)
-cellCheck1.grid(row=5,column=3)
-number1Entry.grid(row=5, column=4)
-email1Label.grid(row=6, column=1)
-email1Entry.grid(row=6, column=2, columnspan = 5)
-
-
-genderOption2.grid(row = 2, column = 1)
-mrCheck2.grid(row = 2, column = 1)
-mrsCheck2.grid(row = 2, column = 2)
-msCheck2.grid(row = 2, column = 3)
-missCheck2.grid(row = 2, column = 4)
-drCheck2.grid(row = 2, column = 5)
-fullName2Label.grid(row=3, column=1)
-fullName2Entry.grid(row=3, column=2, columnspan = 5)
-relationship2Label.grid(row=4, column=1)
-relationship2Entry.grid(row=4, column=2, columnspan = 5)
-phone2Label.grid(row=5, column=1)
-workCheck2.grid(row=5, column=2)
-cellCheck2.grid(row=5,column=3)
-number2Entry.grid(row=5, column=4)
-email2Label.grid(row=6, column=1)
-email2Entry.grid(row=6, column=2, columnspan = 5)
-
 #price
 priceFrame.grid(row=1, column=3, sticky='w')
 dollarLabel.grid(row=1, column=1, sticky="s")
@@ -563,21 +390,6 @@ priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
 
 discountFrame.grid(row=1, column=2, sticky='w')
 discountCheck.grid(row=1, column=1)
-
-paymentFrame.grid(row=5, column = 1)
-paymentTypeFrame.grid(row=1, column=1)
-visaCheck.grid(row=1, column=1)
-mcCheck.grid(row=1, column=2)
-amexCheck.grid(row=1, column=3)
-paymentDetailsFrame.grid(row=2, column=1, columnspan=3)
-creditNumberLabel.grid(row=1, column=1)
-creditNumberEntry.grid(row=1, column=2)
-cvvLabel.grid(row=1, column=3)
-cvvEntry.grid(row=1, column=4)
-expiryLabel.grid(row=1, column=5)
-expiryMonthMenu.grid(row=1, column=6)
-slashLabel.grid(row=1, column=7)
-expiryYearMenu.grid(row=1, column=8)
 
 enterButton.grid(row=6, column=1)
 
