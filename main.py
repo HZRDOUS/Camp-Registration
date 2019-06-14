@@ -144,14 +144,6 @@ def limitSizePhone(*args):
     value = phoneVar.get()
     if len(value) > 10: phoneVar.set(value[:10])
 
-def limitSizeParentPhone1(*args):
-    value = number1Var.get()
-    if len(value) > 10: number1Var.set(value[:10])
-
-def limitSizeParentPhone2(*args):
-    value = number2Var.get()
-    if len(value) > 10: number2Var.set(value[:10])
-
 #HomeInfo
 primaryInfoFrame = LabelFrame(homeInfo, text="Primary Home Info", font = ("Courier New", 10))
 addressVar = StringVar()
@@ -225,18 +217,20 @@ discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onva
 
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
-listBox = Listbox(regframe, width = 75, height=30)
+listBox = Listbox(regframe, width = 75, height=10)
 listBox.grid(row=2, column=1)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
 
 scrollbar = Scrollbar(regframe)
-listBox2 = Listbox(regframe, width = 75, height=30)
+listBox2 = Listbox(regframe, width = 75, height=10)
 
-programMenu
+programSearchVar = StringVar()
+programSearchMenu = OptionMenu(regframe, programSearchVar, *programs)
+programSearchMenu.grid(row=3, column=1)
 
-listBox2.grid(row=3, column=1)
+listBox2.grid(row=4, column=1)
 # bind listbox to scrollbar
 listBox2.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox2.yview)
@@ -334,7 +328,7 @@ campLabel2.grid(row=2, column=1, padx = 10)
 #infoFrame gridding
 infoLabel.grid(row=1, column=1, sticky = "W")
 #Kidinfo Gridding
-nameFrame.grid(row=1, column=1, rowspan = 4, padx = 10, pady = 10)
+nameFrame.grid(row=1, column=1, rowspan = 5, padx = 10, pady = 10)
 firstNameChildLabel.grid(row=1, column=1)
 firstNameEntry.grid(row=2, column=1)
 lastNameChildLabel.grid(row=3, column=1)
@@ -351,7 +345,7 @@ genderFrame.grid(row=1, column=3, padx = 10, pady = 10)
 maleRadio.grid(row = 1, column = 1, sticky="W")
 femaleRadio.grid(row = 1, column = 2, sticky="W")
 # otherRadio.grid(row = 1, column = 3, sticky="W")
-programFrame.grid(row=4, column=2, columnspan = 3, padx = 10, pady = 10)
+programFrame.grid(row=3, column=2, columnspan=3)
 programMenu.grid(row=1, column=1)
 
 #homeInfo gridding
@@ -383,16 +377,15 @@ otherCheck.grid(row = 1, column = 6)
 otherEntry.grid(row = 1, column = 7)
 
 #price
-priceFrame.grid(row=1, column=3, sticky='w')
+priceFrame.grid(row=5, column=1, columnspan=3, sticky='s')
 dollarLabel.grid(row=1, column=1, sticky="s")
 priceLabel.grid(row=1, column=2, sticky='s')
 priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
 
-discountFrame.grid(row=1, column=2, sticky='w')
+discountFrame.grid(row=5, column=3, sticky='s')
 discountCheck.grid(row=1, column=1)
 
 enterButton.grid(row=6, column=1)
-
 
 
 # creditButton.grid(row=1, column=1)
