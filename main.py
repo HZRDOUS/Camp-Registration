@@ -9,8 +9,8 @@ monthDob = []
 dayDob = []
 yearDob = []
 gender = []
-program = [[]]
-price = []
+program = []
+pricePaid = []
 discount = []
 address = []
 city = []
@@ -20,32 +20,8 @@ postal = []
 phone = []
 livesWith = []
 
-#def clear():
-#    for var in vars:
-#        if var == genderVar:
-#            var.set("Male")
-#        elif var == programVar:
-#            var.set(programs[0])
-#        elif var == monthVar or var == dayVar:
-#            var.set(1)
-#        elif var == yearVar:
-#            var.set(2000)
-#        else:
-#            var.set("")
-
-# def showMsg():
-#     img = Image.open("shake.jpg").resize((200,200))
-#     shakePhoto = ImageTk.PhotoImage(img)
-#     popup = Toplevel(root)
-#     popup.wm_title("HZRDOUS")
-#     popup.tkraise(root) # This just tells the message to be on top of the root window.
-#     mainLabel = Label(popup, text="If you like what you see, visit me at").grid(row=1, column = 2)
-#     mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
-#     imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
-#     imgLabel.image = shakePhoto
-
 root.title("Camp Kidney Registration 2019")
-root.iconbitmap()
+root.iconbitmap("lazlo.ico")
 dbg = root.cget("background")
 mainframe = Frame(root)
 infoFrame = Frame(mainframe)
@@ -59,8 +35,6 @@ root.config(menu=menu)
 filemenu = Menu(menu)
 menu.add_cascade(label="Edit", menu=filemenu)
 #filemenu.add_command(label="Clear", command = clear)
-#filemenu.add_command(label="Dark Mode", command = darkMode)
-#filemenu.add_command(label="Light Mode", command = lightMode)
 
 # creditButton = Button(mainframe, command = showMsg, width=1, height=1)
 
@@ -174,8 +148,8 @@ def disableOther(): #Check to see if the "Other" radio button is enabled so it d
     enable.set(False)
     otherEntry.configure(state = DISABLED)
 
-parentInfoFrame = LabelFrame(homeInfo, text="Parent Info", font = ("Courier New", 10))
-childLivesWithFrame = LabelFrame(parentInfoFrame, text="Child Lives With:", font = ("Courier New", 10), width = 300)
+
+childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
 childLivesWithVar = StringVar()
 childLivesWithVar.set("Both Parents")
 bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = disableOther)
@@ -189,24 +163,29 @@ enable = BooleanVar()
 otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Type here", command = enableOther)
 
 y = 0
-z = 0
 def checkPrice():
     global y
-    global z
     global price
     price = 0
-    string = ""
     vars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
-    for x in vars:
-        if x in string:
+    string = ""
+    program.append([])
+    #print(y) #Debugging to make sure y is a good value
+    #print(program[y]) #Debugging to check the index values
+    if len(program[y]) != 0:
+        program[y].clear()
+        #print(program[y]) #Debugging to make sure list is being cleared properly
+    for c in vars:
+        if c in string:
             continue
         else:
             price += 20
-            program[y].append(x)
+            program[y].append(c)
             if discountVar.get() != 0:
                 price *= discountVar.get()
             else:
                 continue
+    #print(program[y]) #Debugging to make sure 2D list is being configured properly
     programPriceVar.set("{:.2f}".format(price))
 
 
@@ -242,23 +221,35 @@ scrollbar.config(command=listBox2.yview)
 
 i = 0
 counteri = 0
-studentCount = 1
+
+def showInfo():
+    pass
 
 def enterInfo():
+    requiredVars = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
+    for x in requiredVars:
+        if len(x) == 0:
+           messagebox.showerror("Error", "Error: A required field has been left blank. Please go back and check to see if your info has been entered correctly!")
+           break
+        else:    
+           continue
+    if programPriceVar.get() == 0:
+        messagebox.showerror("Error", "Error: You have not gotten the price paid for the child. Please get the price and try again!")
+
+
     global counteri
     global i
-    global studentCount
-
+    global y
     firstName.append(firstNameVar.get())
     lastName.append(lastNameVar.get())
     s = "signed up for "
-    for y in range(len(program[i])):
-        print(y)
-        s += str(program[i][y])
-        if program[i][y] == (len(program[i][y]) - 1):
-            s + "."
+    for z in range(len(program[i])):
+        print(z)
+        s += str(program[i][z])
+        if program[i][z] == program[i][(len(program[i]) - 1)]:
+            s += "."
         else:
-            s + ", "
+            s += ", "
     listBox.insert(counteri, f"{str(i+1)}, {firstName[i]} {lastName[i]}, {s}")
 
     counteri += 1
@@ -266,7 +257,7 @@ def enterInfo():
     monthDob.append(monthVar.get())
     dayDob.append(dayVar.get())
     yearDob.append(yearVar.get())
-    listBox.insert(counteri, "- " + str(dayDob[i]) + "-" + str(monthDob[i]) + "-" + str(yearDob[i]))
+    listBox.insert(counteri, f"- Born {dayDob[i]}/{(monthDob[i])}/{(yearDob[i])}")
 
     counteri += 1
 
@@ -276,8 +267,8 @@ def enterInfo():
     counteri+=1
 
 
-    price.append(programPriceVar.get())
-    listBox.insert(counteri, "- Signed up for " + program[i] + " and being charged $" + f"{price[i]:.2f}")
+    pricePaid.append(programPriceVar.get())
+    listBox.insert(counteri, f"- Charged ${pricePaid[i]:.2f}")
 
     counteri+=1
 
@@ -306,6 +297,7 @@ def enterInfo():
     listBox.insert(counteri, f"- Lives with {livesWith[i]}")
 
     i += 1
+    y += 1
     counteri += 1
 
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
@@ -370,10 +362,9 @@ postalEntry.grid(row = 3, column = 4)
 phoneLabel.grid(row = 4, column = 1)
 phoneEntry.grid(row = 4, column = 2, columnspan = 3)
 #Parent Info
-parentInfoFrame.grid(row = 2, column = 1)
 
 #Child Lives With?
-childLivesWithFrame.grid(row = 1, column = 1, columnspan = 8)
+childLivesWithFrame.grid(row = 2, column = 1, columnspan = 8)
 bothCheck.grid(row = 1, column = 1)
 fatherCheck.grid(row = 1, column = 2)
 motherCheck.grid(row = 1, column = 3)
