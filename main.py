@@ -9,7 +9,7 @@ monthDob = []
 dayDob = []
 yearDob = []
 gender = []
-program = []
+program = [[]]
 price = []
 discount = []
 address = []
@@ -20,18 +20,18 @@ postal = []
 phone = []
 livesWith = []
 
-def clear():
-    for var in vars:
-        if var == genderVar:
-            var.set("Male")
-        elif var == programVar:
-            var.set(programs[0])
-        elif var == monthVar or var == dayVar:
-            var.set(1)
-        elif var == yearVar:
-            var.set(2000)
-        else:
-            var.set("")
+#def clear():
+#    for var in vars:
+#        if var == genderVar:
+#            var.set("Male")
+#        elif var == programVar:
+#            var.set(programs[0])
+#        elif var == monthVar or var == dayVar:
+#            var.set(1)
+#        elif var == yearVar:
+#            var.set(2000)
+#        else:
+#            var.set("")
 
 # def showMsg():
 #     img = Image.open("shake.jpg").resize((200,200))
@@ -43,19 +43,6 @@ def clear():
 #     mainLabel2 = Label(popup, text="github.com/HZRDOUS to see more!").grid(row=2, column=2)
 #     imgLabel = Label(popup, image=shakePhoto).grid(row=1, column = 1, rowspan=2)
 #     imgLabel.image = shakePhoto
-
-#def darkMode():
-#    root.configure(background="black")
-#    for wid in widgets:
-#        if wid == mainframe:
-#            wid.config(bg="black")
-#        else:
-#            wid.config(bg="black", fg="white")
-
-#def lightMode():
-#    root.configure(background=dbg)
-#    for wid in widgets:
-#        wid.config(bg=dbg, fg="black")
 
 root.title("Camp Kidney Registration 2019")
 root.iconbitmap()
@@ -71,7 +58,7 @@ root.config(menu=menu)
 
 filemenu = Menu(menu)
 menu.add_cascade(label="Edit", menu=filemenu)
-filemenu.add_command(label="Clear", command = clear)
+#filemenu.add_command(label="Clear", command = clear)
 #filemenu.add_command(label="Dark Mode", command = darkMode)
 #filemenu.add_command(label="Light Mode", command = lightMode)
 
@@ -120,15 +107,26 @@ genderVar.set("Male")
 maleRadio = Radiobutton(genderFrame, text="Male", variable = genderVar, value="Male")
 femaleRadio = Radiobutton(genderFrame, text="Female", variable = genderVar, value="Female")
 # otherRadio = Radiobutton(genderFrame, text="Other", variable = genderVar, value="Other")
-#Program
-programFrame = LabelFrame(kidInfo, text="Program:", font = ("Courier New", 10))
-programVar = StringVar()
-programVar.set("--- Select Program ---")
-programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fishing with Garrison Stokes", 
-            "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
-            "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
-            "Beyond Scared Straight (Camp Edition)"]
 
+#Programs
+programFrame = LabelFrame(kidInfo, text="Program:", font = ("Courier New", 10))
+session1Var = StringVar()
+session1Check = Checkbutton(programFrame, text="Session 1", variable=session1Var, onvalue="Session 1", offvalue="")
+session2Var = StringVar()
+session2Check = Checkbutton(programFrame, text="Session 2", variable=session2Var, onvalue="Session 2", offvalue="")
+session3Var = StringVar()
+session3Check = Checkbutton(programFrame, text="Session 3", variable=session3Var, onvalue="Session 3", offvalue="")
+session4Var = StringVar()
+session4Check = Checkbutton(programFrame, text="Session 4", variable=session4Var, onvalue="Session 4", offvalue="")
+
+#programVar.set("--- Select Program ---")
+#programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fishing with Garrison Stokes", 
+#            "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
+#            "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
+#            "Beyond Scared Straight (Camp Edition)"]
+
+programVar = StringVar()
+programs = ["Session 1", "Session 2", "Session 3", "Session 4"]
 programMenu = OptionMenu(programFrame, programVar, *programs)
 programMenu.configure(font = ("Courier New", 10))
 
@@ -190,25 +188,32 @@ otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=
 enable = BooleanVar()
 otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Type here", command = enableOther)
 
-#Price
-def checkProgram():
-    i = 0
-    for item in programs:
-        if programs[i] == programVar.get():
-            programPriceVar.set("{:.2f}".format(programPrice[i]))
-            if discountVar.get() != 0:
-                programPriceVar.set("{:.2f}".format(programPrice[i] * discountVar.get()))
-            else:
-                pass
-        else:
-            i += 1
+y = 0
+z = 0
+def checkPrice():
+    global y
+    global z
+    global price
+    price = 0
+    string = ""
+    vars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
+    for x in vars:
+        if x in string:
             continue
+        else:
+            price += 20
+            program[y].append(x)
+            if discountVar.get() != 0:
+                price *= discountVar.get()
+            else:
+                continue
+    programPriceVar.set("{:.2f}".format(price))
 
 
 priceFrame = Frame(kidInfo)
 dollarLabel = Label(priceFrame, text="$", font = ("Courier New", 12))
 priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier New", 12))
-priceButton = Button(priceFrame, text="Get Price", command = checkProgram)
+priceButton = Button(priceFrame, text="Get Price", command = checkPrice)
 
 discountFrame = LabelFrame(kidInfo, text="Discount?")
 discountVar = DoubleVar()
@@ -246,8 +251,15 @@ def enterInfo():
 
     firstName.append(firstNameVar.get())
     lastName.append(lastNameVar.get())
-    program.append(programVar.get())
-    listBox.insert(counteri, f"{str(i+1)}, {firstName[i]} {lastName[i]}, signed up for {program[i]}")
+    s = "signed up for "
+    for y in range(len(program[i])):
+        print(y)
+        s += str(program[i][y])
+        if program[i][y] == (len(program[i][y]) - 1):
+            s + "."
+        else:
+            s + ", "
+    listBox.insert(counteri, f"{str(i+1)}, {firstName[i]} {lastName[i]}, {s}")
 
     counteri += 1
 
@@ -298,19 +310,10 @@ def enterInfo():
 
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
 
-# for i in range(100):
-#     for i in kids[i]:
-#         listbox.insert(END)
-
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
 
-vars = [firstNameVar, lastNameVar, monthVar, dayVar, yearVar, genderVar, programVar, addressVar,
-        cityVar, provinceVar, countryVar, postalVar, phoneVar]
-
-widgets = [mainframe, infoLabel, menu, filemenu, campLabel, nameLabel, firstNameEntry, 
-           lastNameEntry, dateOfBirthLabel]
 #Grid
 root.minsize(width=1100, height=700)
 root.maxsize(width=1200, height=900)
@@ -346,7 +349,10 @@ maleRadio.grid(row = 1, column = 1, sticky="W")
 femaleRadio.grid(row = 1, column = 2, sticky="W")
 # otherRadio.grid(row = 1, column = 3, sticky="W")
 programFrame.grid(row=3, column=2, columnspan=3)
-programMenu.grid(row=1, column=1)
+session1Check.grid(row=1, column=1)
+session2Check.grid(row=1, column=2)
+session3Check.grid(row=1, column=3)
+session4Check.grid(row=1, column=4)
 
 #homeInfo gridding
 #Home Info
