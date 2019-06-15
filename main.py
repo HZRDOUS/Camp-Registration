@@ -101,8 +101,6 @@ session4Check = Checkbutton(programFrame, text="Session 4", variable=session4Var
 
 programVar = StringVar()
 programs = ["Session 1", "Session 2", "Session 3", "Session 4"]
-programMenu = OptionMenu(programFrame, programVar, *programs)
-programMenu.configure(font = ("Courier New", 10))
 
 programPriceVar = DoubleVar()
 programPriceVar.set(0.00)
@@ -147,6 +145,7 @@ def enableOther(): #Enable "Other" radio button and "Other" entry space
 def disableOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
     enable.set(False)
     otherEntry.configure(state = DISABLED)
+    otherEntry.configure()
 
 
 childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
@@ -175,16 +174,14 @@ def checkPrice():
     if len(program[y]) != 0:
         program[y].clear()
         #print(program[y]) #Debugging to make sure list is being cleared properly
-    for c in vars:
-        if c in string:
-            continue
-        else:
+    for session in vars:
+        if session not in string:
             price += 20
-            program[y].append(c)
-            if discountVar.get() != 0:
-                price *= discountVar.get()
-            else:
-                continue
+            program[y].append(session)
+        else:
+            continue
+    if discountVar.get() != 0:
+        price *= discountVar.get()
     #print(program[y]) #Debugging to make sure 2D list is being configured properly
     programPriceVar.set("{:.2f}".format(price))
 
@@ -197,12 +194,12 @@ priceButton = Button(priceFrame, text="Get Price", command = checkPrice)
 discountFrame = LabelFrame(kidInfo, text="Discount?")
 discountVar = DoubleVar()
 discountVar.set
-discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onvalue=0.950, offvalue=0, variable=discountVar, font = ("Courier New", 10))
+discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onvalue=0.95, offvalue=0, variable=discountVar, font = ("Courier New", 10))
 
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
 listBox = Listbox(regframe, width = 75, height=10)
-listBox.grid(row=2, column=1)
+listBox.grid(row=2, column=1, columnspan=2)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
@@ -210,22 +207,20 @@ scrollbar.config(command=listBox.yview)
 scrollbar = Scrollbar(regframe)
 listBox2 = Listbox(regframe, width = 75, height=10)
 
-programSearchVar = StringVar()
-programSearchMenu = OptionMenu(regframe, programSearchVar, *programs)
-programSearchMenu.grid(row=3, column=1)
-
-listBox2.grid(row=4, column=1)
+listBox2.grid(row=4, column=1, columnspan=2)
 # bind listbox to scrollbar
 listBox2.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox2.yview)
 
-i = 0
-counteri = 0
+programSearchVar = StringVar()
+programSearchMenu = OptionMenu(regframe, programSearchVar, *programs)
+programSearchMenu.grid(row=3, column=1)
 
-def showInfo():
-    pass
-
+lineNum = 0
+z = 0
 def enterInfo():
+    global z
+    global lineNum
     requiredVars = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
     for x in requiredVars:
         if len(x) == 0:
@@ -235,14 +230,61 @@ def enterInfo():
            continue
     if programPriceVar.get() == 0:
         messagebox.showerror("Error", "Error: You have not gotten the price paid for the child. Please get the price and try again!")
+        return
+
+    firstName.append(firstNameVar.get() + " " + lastNameVar.get())
+    monthDob.append(monthVar.get())
+    dayDob.append(dayVar.get())
+    yearDob.append(yearVar.get())
+    gender.append(genderVar.get())
+    pricePaid.append(programPriceVar.get())
+    address.append(addressVar.get())
+    city.append(cityVar.get())
+    province.append(provinceVar.get())
+    country.append(countryVar.get())
+    postal.append(postalVar.get())
+    phone.append(phoneVar.get())
+    livesWith.append(childLivesWithVar.get())    
+    listBox.insert(lineNum, f"{firstName[z]}")
+    lineNum += 1
+    z += 1
+
+def programSearch():
+    if listBox2.size() != 0:
+        listBox2.delete(0, END)
+    selectedProgram = programSearchVar.get()
+    p = 0
+    for child in firstName:
+        for item in range(len(program)):
+            for subitem in range(len(program[item])):
+                if program[item][subitem] in selectedProgram:
+                    listBox2.insert(p, child)
+                else:
+                    continue
+                p += 1
+
+#programMenuVar = StringVar()
+#programMenu = OptionMenu(programFrame, programVar, *programs)
+#programMenu.configure(font = ("Courier New", 10))
+searchButton = Button(regframe, text="Search", command = programSearch).grid(row=3, column=2)
 
 
+y = 0
+def getInfo():
     global counteri
     global i
     global y
-    firstName.append(firstNameVar.get())
-    lastName.append(lastNameVar.get())
-    s = "signed up for "
+    i = 0
+    selection = listBox.curselection()
+    print(selection)
+    for child in firstName:
+        if child in listBox.get(selection, END):
+            i = int(selection[0])
+        else:
+            continue
+    print(selection)
+
+    s = ""
     for z in range(len(program[i])):
         print(z)
         s += str(program[i][z])
@@ -250,58 +292,25 @@ def enterInfo():
             s += "."
         else:
             s += ", "
-    listBox.insert(counteri, f"{str(i+1)}, {firstName[i]} {lastName[i]}, {s}")
-
-    counteri += 1
-
-    monthDob.append(monthVar.get())
-    dayDob.append(dayVar.get())
-    yearDob.append(yearVar.get())
-    listBox.insert(counteri, f"- Born {dayDob[i]}/{(monthDob[i])}/{(yearDob[i])}")
-
-    counteri += 1
-
-    gender.append(genderVar.get())
-    listBox.insert(counteri, "- " + gender[i])
-
-    counteri+=1
-
-
-    pricePaid.append(programPriceVar.get())
-    listBox.insert(counteri, f"- Charged ${pricePaid[i]:.2f}")
-
-    counteri+=1
 
     if discountVar.get() != 0: #Check if child applied with discount
-        discount.append(discountVar.get())
-        listBox.insert(counteri, "- Applied with a discount of 5%")
-        counteri+=1
+        discountValue = ((1 - discountVar.get()) * 100)
+        discount.append(f"Discount of {discountValue:.2f}%")
     else:
-        pass
+        discount.append("No discount.")
+    
+    lines = [f"Info on {firstName[i]}",
+                f"Born {dayDob[i]}/{(monthDob[i])}/{(yearDob[i])}",
+                f"Charged ${pricePaid[i]:.2f} for {s}, {discount[i]}",
+                f"Lives on {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}",
+                f"Lives with {livesWith[i]}",
+                f"Can be contacted at {phone[i]}"]
 
-    address.append(addressVar.get())
-    city.append(cityVar.get())
-    province.append(provinceVar.get())
-    country.append(countryVar.get())
-    postal.append(postalVar.get())
-    phone.append(phoneVar.get())
-    listBox.insert(counteri, f"- {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}")
-
-    counteri += 1
-
-    listBox.insert(counteri, f"{phone[i]}")
-
-    counteri += 1
-
-    livesWith.append(childLivesWithVar.get())
-    listBox.insert(counteri, f"- Lives with {livesWith[i]}")
-
-    i += 1
+    messagebox.showinfo("Child Info", "\n".join(lines))
     y += 1
-    counteri += 1
 
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
-
+showInfoButton = Button(regframe, text="Show Child Info", command = getInfo).grid(row=1, column=2)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
