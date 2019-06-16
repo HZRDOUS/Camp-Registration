@@ -99,11 +99,13 @@ programPrice = [0.00, 100.00, 100.00, 100.00, 500.00, 350.00, 50.00, 700.00, 100
 
 def limitSizeCode(*args):
     value = postalVar.get()
-    if len(value) > 6: postalVar.set(value[:6])
+    if len(value) > 6: 
+        postalVar.set(value[:6])
 
 def limitSizePhone(*args):
     value = phoneVar.get()
-    if len(value) > 10: phoneVar.set(value[:10])
+    if len(value) > 10: 
+        phoneVar.set(value[:10])
 
 #HomeInfo
 primaryInfoFrame = LabelFrame(homeInfo, text="Primary Home Info", font = ("Courier New", 10))
@@ -130,11 +132,15 @@ phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 
 #Parent Info
 
+def traceChildLivesWithVar():
+    value = otherVar.get()
+    childLivesWithVar.set(value)
+
 def enableOther(): #Enable "Other" radio button and "Other" entry space
-    value = enable.get()
-    if value == True:
+    enabled = enable.get()
+    if enabled == True:
         otherEntry.config(state=NORMAL)
-        childLivesWithVar.set(otherVar)
+        childLivesWithVar.set("Type here")
     else:
         otherEntry.config(state=DISABLED)
 
@@ -146,7 +152,6 @@ def disableOther(): #Check to see if the "Other" radio button is enabled so it d
     elif enabled == None:
         pass
 
-
 childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
 childLivesWithVar = StringVar()
 childLivesWithVar.set("Both Parents")
@@ -156,7 +161,8 @@ motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLi
 grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = disableOther)
 guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = disableOther)
 otherVar = StringVar()
-otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
+otherVar.set("")
+otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=DISABLED)
 enable = BooleanVar()
 otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=enable, value=True, command = enableOther)
 
