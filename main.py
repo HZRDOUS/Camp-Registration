@@ -1,3 +1,14 @@
+#################################
+# Author: Matthew Nocera-Iozzo  #
+# Title: Camp Registration Form #
+# Date: 2019-06-16              #
+# Class: ICS3U1-03              #
+# Teacher: Mr. Dani Shaft       #
+# (Dancing is forbidden)        #
+#################################
+
+# Any print statement in this program is for debugging/checking values in loops only. #
+
 from tkinter import *
 from tkinter import messagebox
 root = Tk()
@@ -22,20 +33,14 @@ root.title("Camp Kidney Registration 2019")
 root.iconbitmap("lazlo.ico")
 mainframe = Frame(root)
 infoFrame = Frame(mainframe)
-regframe = Frame(mainframe)
+regFrame = Frame(mainframe)
 
 # Define menu widgets
 menu = Menu(root)
 canvas = Canvas(mainframe, width = 200, height = 500)
 root.config(menu=menu)
 
-filemenu = Menu(menu)
-menu.add_cascade(label="Edit", menu=filemenu)
-#filemenu.add_command(label="Clear", command = clear)
-
-# creditButton = Button(mainframe, command = showMsg, width=1, height=1)
-
-infoLabel = Label(regframe, text="Kid Info", font = ("Courier New", 20))
+infoLabel = Label(regFrame, text="Kid Info", font = ("Courier New", 20))
 campLabel = Label(infoFrame, text="Camp Kidney", font = ("Courier New", 20))
 campLabel2 = Label(infoFrame, text="Registration Program", font = ("Courier New", 18))
 nameLabel = Label(infoFrame, text="Full name:", font = ("Courier New", 10))
@@ -44,9 +49,10 @@ genderLabel = Label(infoFrame, text="Gender:", font = ("Courier New", 10))
 
 months = list(range(1, 13))
 days = list(range(1, 32))
-daysOdd = list(range(1, 30))
-daysFeb = list(range(1, 28))
+daysOdd = list(range(1, 31))
+daysFeb = list(range(1, 29))
 years = list(range(2000, 2019))
+
 #Main Labelframe Declaration
 kidInfo = LabelFrame(infoFrame, text = "Child Info", font = ("Courier New", 10))
 homeInfo = LabelFrame(infoFrame, text = "Household Info", font = ("Courier New", 10))
@@ -62,8 +68,17 @@ lastNameChildLabel = Label(nameFrame, text="Last Name:", font = ("Courier New", 
 lastNameEntry = Entry(nameFrame,  textvariable = lastNameVar,)
 #Date of Birth
 dateFrame = LabelFrame(kidInfo, text = "Date of Birth:", font = ("Courier New", 10))
+
+def checkMonth():
+    if monthVar.get() == 2:
+        dayEntry.config(values = daysFeb)
+    elif monthVar.get() in (4, 6, 9, 11):
+        dayEntry.config(values = daysOdd)
+    else:
+        dayEntry.config(values = days)
+
 monthVar = IntVar()
-monthEntry = Spinbox(dateFrame, textvariable = monthVar, values=months, width = 6)
+monthEntry = Spinbox(dateFrame, textvariable = monthVar, values=months, width = 6, command = checkMonth)
 dayVar = IntVar()
 dayEntry = Spinbox(dateFrame, textvariable = dayVar, values = days, width = 6)
 yearVar = IntVar()
@@ -71,6 +86,7 @@ yearEntry = Spinbox(dateFrame, textvariable = yearVar, values = years, width = 6
 dayLabel = Label(dateFrame, text="Day", font = ("Courier New", 10))
 monthLabel = Label(dateFrame, text="Month", font = ("Courier New", 10))
 yearLabel = Label(dateFrame, text="Year", font = ("Courier New", 10))
+
 #Gender
 genderFrame = LabelFrame(kidInfo, text="Gender:", font = ("Courier New", 10))
 genderVar = StringVar()
@@ -94,7 +110,7 @@ programVar = StringVar()
 programs = ["Session 1", "Session 2", "Session 3", "Session 4"]
 
 programPriceVar = DoubleVar()
-programPriceVar.set(0.00)
+programPriceVar.set("{:.2f}".format(0.00))
 programPrice = [0.00, 100.00, 100.00, 100.00, 500.00, 350.00, 50.00, 700.00, 1000.00, 10.00, 1.00, 0.00, 2000.00]
 
 def limitSizeCode(*args):
@@ -170,7 +186,7 @@ d = 0
 def checkPrice():
     global d
     global price
-    print(d)
+    #print(d)
     price = 0
     vars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
     string = ""
@@ -196,24 +212,22 @@ priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier Ne
 priceButton = Button(priceFrame, text="Get Price", command = checkPrice)
 
 #Regframe declarations
-scrollbar = Scrollbar(regframe)
-listBox = Listbox(regframe, width = 75, height=10)
-listBox.grid(row=2, column=1, columnspan=2)
+#Entry Listbox
+scrollbar = Scrollbar(regFrame)
+listBox = Listbox(regFrame, width = 75, height=10)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
 
-scrollbar = Scrollbar(regframe)
-listBox2 = Listbox(regframe, width = 75, height=10)
-
-listBox2.grid(row=4, column=1, columnspan=2)
+#Search listbox
+scrollbar = Scrollbar(regFrame)
+listBox2 = Listbox(regFrame, width = 75, height=10)
 # bind listbox to scrollbar
 listBox2.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox2.yview)
 
 programSearchVar = StringVar()
-programSearchMenu = OptionMenu(regframe, programSearchVar, *programs)
-programSearchMenu.grid(row=3, column=1)
+programSearchMenu = OptionMenu(regFrame, programSearchVar, *programs)
 
 lineNum = 0
 z = 0
@@ -222,7 +236,6 @@ def enterInfo():
     global z
     global lineNum
     requiredVarsGet = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
-    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
     sessionVars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
 
     for x in requiredVarsGet:
@@ -254,7 +267,12 @@ def enterInfo():
     phone.append(phoneVar.get())
     livesWith.append(childLivesWithVar.get())    
     listBox.insert(lineNum, f"{firstName[z]}")
+    lineNum += 1
+    z += 1
+    clearVars()
 
+def clearVars():
+    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
     for x in requiredVars:
         x.set("")
 
@@ -262,11 +280,7 @@ def enterInfo():
     for x in sessionChecks:
         x.set("")
 
-    programPriceVar.set(0.00)
-
-    lineNum += 1
-    d += 1
-    z += 1
+    programPriceVar.set("{:.2f}".format(0.00))
 
 def programSearch():
     if listBox2.size() != 0:
@@ -277,7 +291,7 @@ def programSearch():
     o = 0 
     for child in firstName:
         for subitem in range(len(program[p])):
-            print(subitem)
+            #print(subitem)
             if selectedProgram in program[p][subitem]:
                 listBox2.insert(p, child)
                 #print(program[p][subitem])
@@ -285,10 +299,7 @@ def programSearch():
                 continue
         p += 1
 
-#programMenuVar = StringVar()
-#programMenu = OptionMenu(programFrame, programVar, *programs)
-#programMenu.configure(font = ("Courier New", 10))
-searchButton = Button(regframe, text="Search", command = programSearch).grid(row=3, column=2)
+searchButton = Button(regFrame, text="Search", command = programSearch)
 
 
 def getInfo():
@@ -297,7 +308,7 @@ def getInfo():
     global y
     i = 0
     selection = listBox.curselection()
-    print(selection)
+    #print(selection)
     try:
         for child in firstName:
             if child in listBox.get(selection, END):
@@ -308,20 +319,20 @@ def getInfo():
         messagebox.showerror("Error", "Error: No child selected. Select a child and try again.")
         return
 
-    print(i)
-    print(program[i])
+    #print(i)
+    #print(program[i])
     s = ""
     for t in range(len(program[i])):
-        print(t)
+        #print(t)
         s += str(program[i][t])
         if program[i][t] == program[i][(len(program[i]) - 1)]:
             s += "."
         else:
             s += ", "
-    print(s)
+    #print(s)
     
     lines = [f"Info on {firstName[i]}",
-                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}, gender is {gender[i].lower()}",
+                f"Born {yearDob[i]}-{monthDob[i]}-{dayDob[i]}, gender is {gender[i].lower()}",
                 f"Charged ${pricePaid[i]:.2f} for {s}",
                 f"Lives on {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}",
                 f"Lives with {livesWith[i].lower()}",
@@ -329,19 +340,24 @@ def getInfo():
 
     messagebox.showinfo("Child Info", "\n".join(lines))
 
+#Filemenu functions
+filemenu = Menu(menu)
+menu.add_cascade(label="Edit", menu=filemenu)
+filemenu.add_command(label="Clear", command = clearVars)
+
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
-showInfoButton = Button(regframe, text="Show Child Info", command = getInfo).grid(row=1, column=2)
+showInfoButton = Button(regFrame, text="Show Child Info", command = getInfo)
 # bind listbox to scrollbar
 listBox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listBox.yview)
 
 #Grid
-root.minsize(width=1100, height=700)
+root.minsize(width=1100, height=500)
 root.maxsize(width=1200, height=900)
 #Frame Gridding
 mainframe.grid(row=1, column = 1, padx = 10, pady = 10)
 infoFrame.grid(row = 1, column = 1)
-regframe.grid(row=1, column=2)
+regFrame.grid(row=1, column=2)
 #Main Labelframe Gridding
 kidInfo.grid(row=3, column = 1)
 homeInfo.grid(row=4, column=1)
@@ -375,6 +391,12 @@ session2Check.grid(row=1, column=2)
 session3Check.grid(row=1, column=3)
 session4Check.grid(row=1, column=4)
 
+#price
+priceFrame.grid(row=5, column=1, columnspan=3, sticky='s')
+dollarLabel.grid(row=1, column=1, sticky="s")
+priceLabel.grid(row=1, column=2, sticky='s')
+priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
+
 #homeInfo gridding
 #Home Info
 primaryInfoFrame.grid(row=1, column=1, sticky = "S")
@@ -390,7 +412,6 @@ postalLabel.grid(row = 3, column = 3)
 postalEntry.grid(row = 3, column = 4)
 phoneLabel.grid(row = 4, column = 1)
 phoneEntry.grid(row = 4, column = 2, columnspan = 3)
-#Parent Info
 
 #Child Lives With?
 childLivesWithFrame.grid(row = 2, column = 1, columnspan = 8)
@@ -402,13 +423,14 @@ guardianCheck.grid(row = 1, column = 5)
 otherCheck.grid(row = 1, column = 6)
 otherEntry.grid(row = 1, column = 7)
 
-#price
-priceFrame.grid(row=5, column=1, columnspan=3, sticky='s')
-dollarLabel.grid(row=1, column=1, sticky="s")
-priceLabel.grid(row=1, column=2, sticky='s')
-priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
-
 enterButton.grid(row=6, column=1)
+
+#Entry Gridding
+listBox.grid(row=2, column=1, columnspan=2)
+listBox2.grid(row=4, column=1, columnspan=2)
+programSearchMenu.grid(row=3, column=1)
+searchButton.grid(row=3, column=2)
+showInfoButton.grid(row=1, column=2)
 
 
 # creditButton.grid(row=1, column=1)
