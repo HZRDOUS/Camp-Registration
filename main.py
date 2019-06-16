@@ -153,34 +153,25 @@ def traceChildLivesWithVar():
     childLivesWithVar.set(value)
 
 def enableOther(): #Enable "Other" radio button and "Other" entry space
-    enabled = enable.get()
-    if enabled == True:
-        otherEntry.config(state=NORMAL)
-        childLivesWithVar.set("Type here")
+    if childLivesWithVar.get() == "Other":
+        otherEntry.config(state = NORMAL)
     else:
-        otherEntry.config(state=DISABLED)
-
-def disableOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
-    enabled = enable.get()
-    if enabled == True:
-        enable.set(False)
-        otherEntry.configure(state = DISABLED)
-    elif enabled == None:
-        pass
+        otherEntry.config(state = DISABLED)
 
 childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
 childLivesWithVar = StringVar()
 childLivesWithVar.set("Both Parents")
-bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = disableOther)
-fatherCheck = Radiobutton(childLivesWithFrame, text="Father", variable = childLivesWithVar, value="Father", command = disableOther)
-motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLivesWithVar, value="Mother", command = disableOther)
-grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = disableOther)
-guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = disableOther)
+bothCheck = Radiobutton(childLivesWithFrame, text="Both Parents", variable = childLivesWithVar, value="Both Parents", command = enableOther)
+fatherCheck = Radiobutton(childLivesWithFrame, text="Father", variable = childLivesWithVar, value="Father", command = enableOther)
+motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLivesWithVar, value="Mother", command = enableOther)
+grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = enableOther)
+guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = enableOther)
 otherVar = StringVar()
 otherVar.set("")
-otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=DISABLED)
-enable = BooleanVar()
-otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=enable, value=True, command = enableOther)
+otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
+otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Other", command = enableOther)
+
+livesWithChecks = [bothCheck, fatherCheck, motherCheck, grandparentCheck, guardianCheck]
 
 d = 0
 def checkPrice():
@@ -249,8 +240,12 @@ def enterInfo():
         messagebox.showerror("Error", "Error: No programs are checked for the child. Please select program(s) and try again!")
         return
 
-    if programPriceVar.get() == 0:
+    if programPriceVar.get() == 0: 
         messagebox.showerror("Error", "Error: You have not gotten the price paid for the child. Please get the price and try again!")
+        return
+
+    if childLivesWithVar.get() == "":
+        messagebox.showerror("Error", "Error: \"Other\" was checked but no values were entered. ")
         return
 
     firstName.append(firstNameVar.get() + " " + lastNameVar.get())
@@ -265,14 +260,17 @@ def enterInfo():
     country.append(countryVar.get())
     postal.append(postalVar.get())
     phone.append(phoneVar.get())
-    livesWith.append(childLivesWithVar.get())    
+    if childLivesWithVar.get() == "Other" and childLivesWithVar.get() != "":
+        livesWith.append(otherVar.get())
+    else:
+        livesWith.append(childLivesWithVar.get())    
     listBox.insert(lineNum, f"{firstName[z]}")
     lineNum += 1
     z += 1
     clearVars()
 
 def clearVars():
-    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
+    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar, otherVar]
     for x in requiredVars:
         x.set("")
 
@@ -288,7 +286,7 @@ def clearVars():
         x.set("")
 
     childLivesWithVar.set("Both Parents")
-
+    otherEntry.config(state=DISABLED)
     programPriceVar.set("{:.2f}".format(0.00))
 
 def programSearch():
