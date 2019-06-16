@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-# from PIL import ImageTk, Image
 root = Tk()
 
 firstName = []
@@ -11,7 +10,6 @@ yearDob = []
 gender = []
 program = []
 pricePaid = []
-discount = []
 address = []
 city = []
 province = []
@@ -22,7 +20,6 @@ livesWith = []
 
 root.title("Camp Kidney Registration 2019")
 root.iconbitmap("lazlo.ico")
-dbg = root.cget("background")
 mainframe = Frame(root)
 infoFrame = Frame(mainframe)
 regframe = Frame(mainframe)
@@ -93,12 +90,6 @@ session3Check = Checkbutton(programFrame, text="Session 3", variable=session3Var
 session4Var = StringVar()
 session4Check = Checkbutton(programFrame, text="Session 4", variable=session4Var, onvalue="Session 4", offvalue="")
 
-#programVar.set("--- Select Program ---")
-#programs = ["--- Select Program ---", "Session 1", "Session 2", "Session 3", "Fishing with Garrison Stokes", 
-#            "Pokemon Camp", "The Birds and Bees Talk", "Programming with Mr. Dani Shaft", 
-#            "Rap Talk with Hopsin", "Just Video Games", "Anime", "Advanced Functions MHF4U", 
-#            "Beyond Scared Straight (Camp Edition)"]
-
 programVar = StringVar()
 programs = ["Session 1", "Session 2", "Session 3", "Session 4"]
 
@@ -141,11 +132,12 @@ phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 
 def enableOther(): #Enable "Other" radio button and "Other" entry space
     otherEntry.config(state=NORMAL)
+    childLivesWithVar.set(otherVar)
+
 
 def disableOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
     enable.set(False)
     otherEntry.configure(state = DISABLED)
-    otherEntry.configure()
 
 
 childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
@@ -157,32 +149,31 @@ motherCheck = Radiobutton(childLivesWithFrame, text="Mother", variable = childLi
 grandparentCheck = Radiobutton(childLivesWithFrame, text="Grandparents", variable = childLivesWithVar, value="Grandparents", command = disableOther)
 guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = childLivesWithVar, value="Guardian(s)", command = disableOther)
 otherVar = StringVar()
-otherEntry = Entry(childLivesWithFrame, textvariable = childLivesWithVar, state=DISABLED)
+otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
 enable = BooleanVar()
-otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=childLivesWithVar, value="Type here", command = enableOther)
+otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=otherVar, value=True, command = enableOther)
 
-y = 0
+d = 0
 def checkPrice():
-    global y
+    global d
     global price
+    print(d)
     price = 0
     vars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
     string = ""
     program.append([])
-    #print(y) #Debugging to make sure y is a good value
-    #print(program[y]) #Debugging to check the index values
-    if len(program[y]) != 0:
-        program[y].clear()
-        #print(program[y]) #Debugging to make sure list is being cleared properly
+    #print(d) #Debugging to make sure y is a good value
+    #print(program[d]) #Debugging to check the index values
+    if len(program[d]) != 0:
+        program[d].clear()
+        #print(program[d]) #Debugging to make sure list is being cleared properly
     for session in vars:
         if session not in string:
             price += 20
-            program[y].append(session)
+            program[d].append(session)
         else:
             continue
-    if discountVar.get() != 0:
-        price *= discountVar.get()
-    #print(program[y]) #Debugging to make sure 2D list is being configured properly
+    #print(program[d]) #Debugging to make sure 2D list is being configured properly
     programPriceVar.set("{:.2f}".format(price))
 
 
@@ -190,11 +181,6 @@ priceFrame = Frame(kidInfo)
 dollarLabel = Label(priceFrame, text="$", font = ("Courier New", 12))
 priceLabel = Label(priceFrame, textvariable=programPriceVar, font = ("Courier New", 12))
 priceButton = Button(priceFrame, text="Get Price", command = checkPrice)
-
-discountFrame = LabelFrame(kidInfo, text="Discount?")
-discountVar = DoubleVar()
-discountVar.set
-discountCheck = Checkbutton(discountFrame, text="Dani Shaft Deal (5% off)", onvalue=0.95, offvalue=0, variable=discountVar, font = ("Courier New", 10))
 
 #Regframe declarations
 scrollbar = Scrollbar(regframe)
@@ -219,13 +205,15 @@ programSearchMenu.grid(row=3, column=1)
 lineNum = 0
 z = 0
 def enterInfo():
+    global d
     global z
     global lineNum
-    requiredVars = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
-    for x in requiredVars:
+    requiredVarsGet = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
+    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
+    for x in requiredVarsGet:
         if len(x) == 0:
            messagebox.showerror("Error", "Error: A required field has been left blank. Please go back and check to see if your info has been entered correctly!")
-           break
+           return
         else:    
            continue
     if programPriceVar.get() == 0:
@@ -246,22 +234,29 @@ def enterInfo():
     phone.append(phoneVar.get())
     livesWith.append(childLivesWithVar.get())    
     listBox.insert(lineNum, f"{firstName[z]}")
+
+    for x in requiredVars:
+        x.set("")
     lineNum += 1
+    d += 1
     z += 1
 
 def programSearch():
     if listBox2.size() != 0:
         listBox2.delete(0, END)
     selectedProgram = programSearchVar.get()
+    global p
     p = 0
+    o = 0 
     for child in firstName:
-        for item in range(len(program)):
-            for subitem in range(len(program[item])):
-                if program[item][subitem] in selectedProgram:
-                    listBox2.insert(p, child)
-                else:
-                    continue
-                p += 1
+        for subitem in range(len(program[p])):
+            print(subitem)
+            if selectedProgram in program[p][subitem]:
+                listBox2.insert(p, child)
+                #print(program[p][subitem])
+            elif selectedProgram not in program[p][subitem]:
+                continue
+        p += 1
 
 #programMenuVar = StringVar()
 #programMenu = OptionMenu(programFrame, programVar, *programs)
@@ -269,7 +264,6 @@ def programSearch():
 searchButton = Button(regframe, text="Search", command = programSearch).grid(row=3, column=2)
 
 
-y = 0
 def getInfo():
     global counteri
     global i
@@ -282,32 +276,26 @@ def getInfo():
             i = int(selection[0])
         else:
             continue
-    print(selection)
-
+    print(i)
+    print(program[i])
     s = ""
-    for z in range(len(program[i])):
-        print(z)
-        s += str(program[i][z])
-        if program[i][z] == program[i][(len(program[i]) - 1)]:
+    for t in range(len(program[i])):
+        print(t)
+        s += str(program[i][t])
+        if program[i][t] == program[i][(len(program[i]) - 1)]:
             s += "."
         else:
             s += ", "
-
-    if discountVar.get() != 0: #Check if child applied with discount
-        discountValue = ((1 - discountVar.get()) * 100)
-        discount.append(f"Discount of {discountValue:.2f}%")
-    else:
-        discount.append("No discount.")
+    print(s)
     
     lines = [f"Info on {firstName[i]}",
-                f"Born {dayDob[i]}/{(monthDob[i])}/{(yearDob[i])}",
-                f"Charged ${pricePaid[i]:.2f} for {s}, {discount[i]}",
+                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}",
+                f"Charged ${pricePaid[i]:.2f} for {s}",
                 f"Lives on {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}",
                 f"Lives with {livesWith[i]}",
                 f"Can be contacted at {phone[i]}"]
 
     messagebox.showinfo("Child Info", "\n".join(lines))
-    y += 1
 
 enterButton = Button(infoFrame, text="Enter info", command=enterInfo)
 showInfoButton = Button(regframe, text="Show Child Info", command = getInfo).grid(row=1, column=2)
@@ -387,9 +375,6 @@ priceFrame.grid(row=5, column=1, columnspan=3, sticky='s')
 dollarLabel.grid(row=1, column=1, sticky="s")
 priceLabel.grid(row=1, column=2, sticky='s')
 priceButton.grid(row=2, column=1, sticky='s', columnspan=2)
-
-discountFrame.grid(row=5, column=3, sticky='s')
-discountCheck.grid(row=1, column=1)
 
 enterButton.grid(row=6, column=1)
 
