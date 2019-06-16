@@ -242,7 +242,7 @@ def enterInfo():
     livesWith.append(childLivesWithVar.get())    
     listBox.insert(lineNum, f"{firstName[z]}")
 
-    for x in requiredVars:
+    for x in requiredVarsGet:
         x.set("")
 
     sessionChecks = [session1Var, session2Var, session3Var, session4Var]
