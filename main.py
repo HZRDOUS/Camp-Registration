@@ -292,11 +292,16 @@ def getInfo():
     i = 0
     selection = listBox.curselection()
     print(selection)
-    for child in firstName:
-        if child in listBox.get(selection, END):
-            i = int(selection[0])
-        else:
-            continue
+    try:
+        for child in firstName:
+            if child in listBox.get(selection, END):
+                i = int(selection[0])
+            else:
+                continue
+    except TclError:
+        messagebox.showerror("Error", "Error: No child selected. Select a child and try again.")
+        return
+
     print(i)
     print(program[i])
     s = ""
