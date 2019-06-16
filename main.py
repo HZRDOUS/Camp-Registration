@@ -276,9 +276,18 @@ def clearVars():
     for x in requiredVars:
         x.set("")
 
+    spinboxes = [dayVar, monthVar, yearVar]
+    for x in spinboxes:
+        if x == yearVar:
+            x.set(2000)
+        else:
+            x.set(1)
+
     sessionChecks = [session1Var, session2Var, session3Var, session4Var]
     for x in sessionChecks:
         x.set("")
+
+    childLivesWithVar.set("Both Parents")
 
     programPriceVar.set("{:.2f}".format(0.00))
 
