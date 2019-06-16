@@ -221,6 +221,7 @@ def enterInfo():
         return
 
     firstName.append(firstNameVar.get() + " " + lastNameVar.get())
+    gender.append(gender.get())
     monthDob.append(monthVar.get())
     dayDob.append(dayVar.get())
     yearDob.append(yearVar.get())
@@ -237,6 +238,13 @@ def enterInfo():
 
     for x in requiredVars:
         x.set("")
+
+    sessionChecks = [session1Var, session2Var, session3Var, session4Var]
+    for x in sessionChecks:
+        x.set("")
+
+    programPriceVar.set(0.00)
+
     lineNum += 1
     d += 1
     z += 1
@@ -289,10 +297,10 @@ def getInfo():
     print(s)
     
     lines = [f"Info on {firstName[i]}",
-                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}",
+                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}, gender is {gender[i].lower}",
                 f"Charged ${pricePaid[i]:.2f} for {s}",
                 f"Lives on {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}",
-                f"Lives with {livesWith[i]}",
+                f"Lives with {livesWith[i].lower()}",
                 f"Can be contacted at {phone[i]}"]
 
     messagebox.showinfo("Child Info", "\n".join(lines))
