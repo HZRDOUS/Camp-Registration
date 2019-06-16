@@ -209,19 +209,25 @@ def enterInfo():
     global z
     global lineNum
     requiredVarsGet = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
-    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
+    sessionVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
+    sessionVars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
+
     for x in requiredVarsGet:
         if len(x) == 0:
            messagebox.showerror("Error", "Error: A required field has been left blank. Please go back and check to see if your info has been entered correctly!")
            return
         else:    
            continue
+
+    if all(x == 0 for x in sessionVars):
+        messagebox.showerror("Error", "Error: No programs are checked for the child. Please select program(s) and try again!")
+        return
+
     if programPriceVar.get() == 0:
         messagebox.showerror("Error", "Error: You have not gotten the price paid for the child. Please get the price and try again!")
         return
 
     firstName.append(firstNameVar.get() + " " + lastNameVar.get())
-    gender.append(gender.get())
     monthDob.append(monthVar.get())
     dayDob.append(dayVar.get())
     yearDob.append(yearVar.get())
@@ -297,7 +303,7 @@ def getInfo():
     print(s)
     
     lines = [f"Info on {firstName[i]}",
-                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}, gender is {gender[i].lower}",
+                f"Born {monthDob[i]}/{(dayDob[i])}/{(yearDob[i])}, gender is {gender[i].lower()}",
                 f"Charged ${pricePaid[i]:.2f} for {s}",
                 f"Lives on {address[i]}, {city[i]}, {province[i]}, {postal[i]}, {country[i]}",
                 f"Lives with {livesWith[i].lower()}",
