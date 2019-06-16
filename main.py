@@ -131,13 +131,20 @@ phoneEntry = Entry(primaryInfoFrame, width = 60, textvariable = phoneVar)
 #Parent Info
 
 def enableOther(): #Enable "Other" radio button and "Other" entry space
-    otherEntry.config(state=NORMAL)
-    childLivesWithVar.set(otherVar)
-
+    value = enable.get()
+    if value == True:
+        otherEntry.config(state=NORMAL)
+        childLivesWithVar.set(otherVar)
+    else:
+        otherEntry.config(state=DISABLED)
 
 def disableOther(): #Check to see if the "Other" radio button is enabled so it doesn't interfere with both variables
-    enable.set(False)
-    otherEntry.configure(state = DISABLED)
+    enabled = enable.get()
+    if enabled == True:
+        enable.set(False)
+        otherEntry.configure(state = DISABLED)
+    elif enabled == None:
+        pass
 
 
 childLivesWithFrame = LabelFrame(homeInfo, text="Child Lives With:", font = ("Courier New", 10), width = 300)
@@ -151,7 +158,7 @@ guardianCheck = Radiobutton(childLivesWithFrame, text="Guardian(s)", variable = 
 otherVar = StringVar()
 otherEntry = Entry(childLivesWithFrame, textvariable = otherVar, state=DISABLED)
 enable = BooleanVar()
-otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=otherVar, value=True, command = enableOther)
+otherCheck = Radiobutton(childLivesWithFrame, text="Other", variable=enable, value=True, command = enableOther)
 
 d = 0
 def checkPrice():
@@ -209,7 +216,7 @@ def enterInfo():
     global z
     global lineNum
     requiredVarsGet = [firstNameVar.get(), lastNameVar.get(), addressVar.get(), cityVar.get(), provinceVar.get(), countryVar.get(), postalVar.get(), phoneVar.get()]
-    sessionVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
+    requiredVars = [firstNameVar, lastNameVar, addressVar, cityVar, provinceVar, countryVar, postalVar, phoneVar]
     sessionVars = [session1Var.get(), session2Var.get(), session3Var.get(), session4Var.get()]
 
     for x in requiredVarsGet:
@@ -242,7 +249,7 @@ def enterInfo():
     livesWith.append(childLivesWithVar.get())    
     listBox.insert(lineNum, f"{firstName[z]}")
 
-    for x in requiredVarsGet:
+    for x in requiredVars:
         x.set("")
 
     sessionChecks = [session1Var, session2Var, session3Var, session4Var]
