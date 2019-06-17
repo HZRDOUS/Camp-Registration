@@ -244,9 +244,13 @@ def enterInfo():
         messagebox.showerror("Error", "Error: You have not gotten the price paid for the child. Please get the price and try again!")
         return
 
-    if childLivesWithVar.get() == "":
-        messagebox.showerror("Error", "Error: \"Other\" was checked but no values were entered. ")
-        return
+    if childLivesWithVar.get() == "Other" and childLivesWithVar.get() != "":
+        if otherVar.get() == "":
+            messagebox.showerror("Error", "Error: \"Other\" was checked but no values were entered. ")
+            return
+        livesWith.append(otherVar.get())
+    else:
+        livesWith.append(childLivesWithVar.get()) 
 
     firstName.append(firstNameVar.get() + " " + lastNameVar.get())
     monthDob.append(monthVar.get())
@@ -259,11 +263,7 @@ def enterInfo():
     province.append(provinceVar.get())
     country.append(countryVar.get())
     postal.append(postalVar.get())
-    phone.append(phoneVar.get())
-    if childLivesWithVar.get() == "Other" and childLivesWithVar.get() != "":
-        livesWith.append(otherVar.get())
-    else:
-        livesWith.append(childLivesWithVar.get())    
+    phone.append(phoneVar.get())   
     listBox.insert(lineNum, f"{firstName[z]}")
     lineNum += 1
     z += 1
